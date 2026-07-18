@@ -1,0 +1,105 @@
+\documentclass[10pt,letterpaper]{extarticle}
+
+% Packages
+\usepackage[top=0.4in, bottom=0.4in, left=0.45in, right=0.45in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+% Hyperlink Setup
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=blue
+}
+
+
+% Section Formatting - Tighter spacing to ensure 1-page fit
+\titleformat{\section}{\large\bfseries\uppercase}{}{0pt}{}[\titlerule]
+\titlespacing{\section}{0pt}{0.5ex}{0.5ex}
+
+% Global Settings
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+\begin{document}
+
+% === HEADER_START ===
+\begin{center}
+    {\Large \textbf{SAURABH SANJAY VELANKAR}} \\ \vspace{2pt} %[cite: 1]
+    New York, NY | (929)-620-7765 | \href{mailto:sauri2010@gmail.com}{sauri2010@gmail.com} | \href{https://linkedin.com/in/saurabhv12}{linkedin.com/in/saurabhv12} | \href{https://github.com/SaurabhVelankar}{github.com/SaurabhVelankar} %[cite: 1]
+\end{center}
+% === HEADER_END ===
+
+% === EDUCATION_START ===
+\section*{EDUCATION}
+\textbf{Master of Science in Computer Science} \hfill Aug 2024 -- May 2026 \\ %[cite: 1]
+New York University, Courant Institute (New York, NY) \hfill GPA: 3.6 \\ %[cite: 1]
+\textit{Courses: Machine Learning, Computer Vision, Deep Learning, Big Data Science, Operating Systems, Data Structures} \\ %[cite: 1]
+\textbf{Bachelor of Technology in Information Technology} \hfill Aug 2018 -- May 2022 \\ %[cite: 1]
+Pune University (Pune, India) \hfill GPA: 3.7 %[cite: 1]
+% === EDUCATION_END ===
+
+% === SKILLS_START ===
+\section*{TECHNICAL SKILLS}
+\textbf{Programming Languages:} Python, C++, SQL, R, JavaScript \\ %[cite: 1]
+\textbf{AI/ML Frameworks:} PyTorch, TensorFlow, Hugging Face Transformers, Scikit-Learn, NLTK \\ %[cite: 1]
+\textbf{MLOps \& Cloud:} AWS, Azure, Docker, Apache Kafka, Kubernetes, Git/GitHub, Linux \\ %[cite: 1]
+\textbf{GenAI \& Agentic Workflows:} RAG Architecture, LangChain, Agent Skills, Markdown, Model Context Protocol, OpenAI API, Gemini API, Cursor, Claude, Vector Databases (Pinecone, Chroma), Semantic Search. %[cite: 1]
+% === SKILLS_END ===
+
+% === EXPERIENCE_START ===
+\section*{WORK EXPERIENCE}
+\textbf{AI Engineer, Research} -- \textit{NYU Future Reality Lab, New York, NY} \href{https://github.com/RayChen666}{Link} \hfill Jan 2026 -- Present %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Architected an LLM-driven Multi-Agent XR system translating natural language into deterministic 3D spatial operations by fusing JSON environment data and real-time VR telemetry to resolve relative spatial intents. %[cite: 1]
+    \item Engineered a probabilistic intent-resolution pipeline utilizing a complex router, contextual memory, and a Verification Agent to autonomously disambiguate commands, achieving 90\% zero-shot success. %[cite: 1]
+\end{itemize}
+\vspace{2pt}
+
+\textbf{Quantitative Data Analyst} -- \textit{AspectRatio Pvt. Ltd., Pune, India} \hfill Dec 2021 -- Mar 2024 %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Spearheaded an NLP feature extraction pipeline using spaCy to parse 10k unstructured physician transcripts, successfully identifying clinical markers for bladder cancer with an 87\% Recall %[cite: 1]
+    \item Designed and executed large-scale statistical experiments for an outreach campaign, applying Kaplan-Meier survival analysis and risk modeling on a 2M-subject cohort to quantify a 30\% improvement in patient outcomes %[cite: 1]
+    \item Prototyped predictive XGBoost/Random Forest models to evaluate competitive dynamics and drug adoption, orchestrating the extraction of patient-level data from AWS Redshift using Python, SQL, and Amazon Athena %[cite: 1]
+    \item Engineered cloud-based data pipelines to automate forensic analytics and feature engineering, reducing manual reporting overhead by 25\% and driving insights that informed system decommissioning, yielding a multi-million-dollar cost optimization %[cite: 1]
+\end{itemize}
+% === EXPERIENCE_END ===
+
+% === PROJECTS_START ===
+\section*{TECHNICAL PROJECTS}
+\textbf{Intuit NYC AI/ML 2026 Hackathon (Overall Rank \#8)} \href{https://github.com/SaurabhVelankar/intuit-ai-ml-hackathon-2026}{Link} \hfill Jun 2026 -- Jun 2026 %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Engineered an underwriting pipeline via HistGradientBoosting and Isotonic regression for calibrated Probability of Default estimates, achieving 0.764 AUC across 13,300+ applicants with 90\% Wilson intervals. %[cite: 1]
+    \item Designed an Expected NPV-based decisioning engine to drive loan approvals via break-even thresholds instead of static classification, maximizing portfolio returns to yield \$16.4M profit. %[cite: 1]
+    \item Developed discrete-time hazard models to forecast cohort risk and counterfactuals, implementing monotonic constraints and causal safeguards to output 1,000+ uncertainty-consistent predictions. %[cite: 1]
+\end{itemize}
+\vspace{2pt}
+
+\textbf{Custom Decoder-Only Transformer \& LLM Pre-training} \href{https://github.com/SaurabhVelankar/pico-llm}{Link} \hfill Jan 2026 -- Feb 2026 %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Engineered a PyTorch GPT-style Transformer from scratch, implementing Multi-Head Causal Attention and Pre-Norm RMS-Normalization to achieve \textasciitilde 4.5 baseline perplexity on a custom corpus. %[cite: 1]
+    \item Resolved VRAM bottlenecks and exploding gradients via a custom optimization loop utilizing Gradient Clipping, AdamW, and OneCycleLR scheduling. %[cite: 1]
+    \item Reduced GPU memory consumption by \textasciitilde 75\% and accelerated convergence, enabling stable multi-epoch pre-training without OOM failures. %[cite: 1]
+\end{itemize}
+\vspace{2pt}
+
+\textbf{SHRDLU -- An LLM Based 3D Spatial Reasoning Model} \href{https://shrdlu-ai.vercel.app/}{Live Website} \hfill Dec 2025 -- Jan 2026 %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Engineered an autonomous agentic system via OpenAI API and JavaScript to execute complex natural language commands, dynamically updating virtual coordinates and persisting state via local storage. %[cite: 1]
+    \item Achieved \textasciitilde 90\% instruction accuracy on multi-step commands with \textless 3s latency, seamlessly integrating language understanding with 3D environment control. %[cite: 1]
+    \item Implemented a context-aware parser utilizing LangChain memory and a real-time RAG pipeline to resolve vague references and consistently interpret ambiguous instructions. %[cite: 1]
+\end{itemize}
+% === PROJECTS_END ===
+
+% === ACADEMIC_RESEARCH_START ===
+\section*{ACADEMIC RESEARCH}
+\textbf{Bio-Inspired Vision \& Robotics Research -- Graduate Researcher, NYU} \href{https://github.com/SaurabhVelankar/cv_fall2025_icl_humanoids}{Link} \hfill Nov 2025 -- Dec 2025 %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Developed bio-inspired neuromodulation modules and In-Context Robot Learning (ICRT) pipelines, significantly enhancing out-of-distribution robustness and few-shot adaptability in dynamic proprioceptive environments %[cite: 1]
+\end{itemize}
+% === ACADEMIC_RESEARCH_END ===
+
+\end{document}

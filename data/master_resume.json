@@ -1,0 +1,663 @@
+{
+  "basics": {
+    "name": "Saurabh Sanjay Velankar",
+    "email": "sauri2010@gmail.com",
+    "phone": "(929)-620-7765",
+    "location": "New York, NY",
+    "links": [
+      {
+        "label": "linkedin.com/in/saurabhv12",
+        "url": "https://linkedin.com/in/saurabhv12"
+      },
+      {
+        "label": "github.com/SaurabhVelankar",
+        "url": "https://github.com/SaurabhVelankar"
+      }
+    ]
+  },
+  "summary": "",
+  "objective": "",
+  "skills": {
+    "groups": [
+      {
+        "id": "programming_languages",
+        "label": "Programming Languages",
+        "items": [
+          "Python",
+          "C++",
+          "SQL",
+          "R",
+          "JavaScript"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "data_engineering",
+          "other"
+        ]
+      },
+      {
+        "id": "ai_ml_frameworks",
+        "label": "AI/ML Frameworks",
+        "altLabels": {
+          "data_science": "Data Science & ML Libraries",
+          "ml": "AI/ML Frameworks",
+          "swe": "ML / Backend Libraries"
+        },
+        "items": [
+          "PyTorch",
+          "TensorFlow",
+          "Hugging Face Transformers",
+          "Scikit-Learn",
+          "NLTK"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "other"
+        ]
+      },
+      {
+        "id": "genai_agentic",
+        "label": "GenAI & Agentic Workflows",
+        "altLabels": {
+          "data_science": "NLP & Applied GenAI",
+          "ml": "GenAI & Agentic Workflows",
+          "swe": "LLM Apps & Agent Tooling",
+          "data_engineering": "LLM / RAG Data Pipelines"
+        },
+        "items": [
+          "RAG Architecture",
+          "LangChain",
+          "Agent Skills",
+          "Markdown",
+          "Model Context Protocol",
+          "OpenAI API",
+          "Gemini API",
+          "Cursor",
+          "Claude",
+          "Vector Databases (Pinecone, Chroma)",
+          "Semantic Search"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "other"
+        ]
+      },
+      {
+        "id": "mlops_cloud",
+        "label": "MLOps & Cloud",
+        "altLabels": {
+          "data_engineering": "Data Engineering & Cloud",
+          "swe": "Cloud & DevOps",
+          "data_science": "Cloud & Experiment Infrastructure",
+          "ml": "MLOps & Cloud"
+        },
+        "items": [
+          "AWS",
+          "Azure",
+          "Docker",
+          "Apache Kafka",
+          "Kubernetes",
+          "Git/GitHub",
+          "Linux"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "data_engineering",
+          "other"
+        ]
+      },
+      {
+        "id": "data_science_stack",
+        "label": "Data Science Stack",
+        "altLabels": {
+          "data_science": "Data Science Stack",
+          "ml": "Stats & Modeling",
+          "data_engineering": "Analytics & Warehousing"
+        },
+        "items": [],
+        "roleRelevance": [
+          "data_science",
+          "ml",
+          "other"
+        ],
+        "includeByDefault": false,
+        "notes": "Useful when retargeting from ML/GenAI toward DS; toggle/label via roleFamily."
+      },
+      {
+        "id": "data_engineering_stack",
+        "label": "Data Engineering Stack",
+        "altLabels": {
+          "data_engineering": "Data Engineering Stack",
+          "swe": "Data / Platform",
+          "data_science": "Data Pipelines"
+        },
+        "items": [],
+        "roleRelevance": [
+          "data_engineering",
+          "data_science",
+          "swe",
+          "other"
+        ],
+        "includeByDefault": false
+      },
+      {
+        "id": "swe_stack",
+        "label": "Software Engineering Stack",
+        "altLabels": {
+          "swe": "Software Engineering Stack",
+          "ml": "Systems & Tooling",
+          "data_engineering": "Application Layer"
+        },
+        "items": [],
+        "roleRelevance": [
+          "swe",
+          "ml",
+          "other"
+        ],
+        "includeByDefault": false
+      },
+      {
+        "id": "databases_storage",
+        "label": "Databases & Storage",
+        "items": [],
+        "roleRelevance": [
+          "data_engineering",
+          "data_science",
+          "swe",
+          "ml",
+          "other"
+        ],
+        "includeByDefault": false
+      },
+      {
+        "id": "visualization_bi",
+        "label": "Visualization & BI",
+        "items": [],
+        "roleRelevance": [
+          "data_science",
+          "other"
+        ],
+        "includeByDefault": false,
+        "notes": "Fill when truthful (Tableau, matplotlib, etc.)."
+      },
+      {
+        "id": "soft_collaboration",
+        "label": "Collaboration",
+        "items": [],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "data_engineering",
+          "other"
+        ],
+        "includeByDefault": false
+      }
+    ]
+  },
+  "education": [
+    {
+      "id": "edu-ms-nyu",
+      "degree": "Master of Science in Computer Science",
+      "school": "New York University, Courant Institute",
+      "location": "New York, NY",
+      "start": "Aug 2024",
+      "end": "May 2026",
+      "gpa": "3.6",
+      "courses": [
+        "Machine Learning",
+        "Computer Vision",
+        "Deep Learning",
+        "Big Data Science",
+        "Operating Systems",
+        "Data Structures"
+      ]
+    },
+    {
+      "id": "edu-btech-pune",
+      "degree": "Bachelor of Technology in Information Technology",
+      "school": "Pune University",
+      "location": "Pune, India",
+      "start": "Aug 2018",
+      "end": "May 2022",
+      "gpa": "3.7",
+      "courses": []
+    }
+  ],
+  "experience": [
+    {
+      "id": "exp-nyu-frl",
+      "title": "AI Engineer, Research",
+      "organization": "NYU Future Reality Lab",
+      "location": "New York, NY",
+      "start": "Jan 2026",
+      "end": "Present",
+      "link": "https://github.com/RayChen666",
+      "roleTags": [
+        "ml",
+        "swe",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "exp-nyu-frl-1",
+          "text": "Architected an LLM-driven Multi-Agent XR system translating natural language into deterministic 3D spatial operations by fusing JSON environment data and real-time VR telemetry to resolve relative spatial intents.",
+          "priority": "high",
+          "keywords": [
+            "LLM",
+            "Multi-Agent",
+            "XR",
+            "natural language",
+            "3D spatial operations",
+            "JSON",
+            "VR telemetry"
+          ]
+        },
+        {
+          "id": "exp-nyu-frl-2",
+          "text": "Engineered a probabilistic intent-resolution pipeline utilizing a complex router, contextual memory, and a Verification Agent to autonomously disambiguate commands, achieving 90% zero-shot success.",
+          "priority": "high",
+          "keywords": [
+            "probabilistic intent-resolution",
+            "router",
+            "contextual memory",
+            "Verification Agent",
+            "zero-shot success"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "exp-aspectratio",
+      "title": "Quantitative Data Analyst",
+      "organization": "AspectRatio Pvt. Ltd.",
+      "location": "Pune, India",
+      "start": "Dec 2021",
+      "end": "Mar 2024",
+      "link": null,
+      "roleTags": [
+        "data_science",
+        "ml",
+        "data_engineering",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "exp-aspectratio-1",
+          "text": "Spearheaded an NLP feature extraction pipeline using spaCy to parse 10k unstructured physician transcripts, successfully identifying clinical markers for bladder cancer with an 87% Recall",
+          "priority": "high",
+          "keywords": [
+            "NLP",
+            "feature extraction",
+            "spaCy",
+            "physician transcripts",
+            "clinical markers",
+            "bladder cancer",
+            "Recall"
+          ]
+        },
+        {
+          "id": "exp-aspectratio-2",
+          "text": "Designed and executed large-scale statistical experiments for an outreach campaign, applying Kaplan-Meier survival analysis and risk modeling on a 2M-subject cohort to quantify a 30% improvement in patient outcomes",
+          "priority": "high",
+          "keywords": [
+            "statistical experiments",
+            "Kaplan-Meier survival analysis",
+            "risk modeling",
+            "patient outcomes"
+          ]
+        },
+        {
+          "id": "exp-aspectratio-3",
+          "text": "Prototyped predictive XGBoost/Random Forest models to evaluate competitive dynamics and drug adoption, orchestrating the extraction of patient-level data from AWS Redshift using Python, SQL, and Amazon Athena",
+          "priority": "high",
+          "keywords": [
+            "XGBoost",
+            "Random Forest",
+            "predictive models",
+            "AWS Redshift",
+            "Python",
+            "SQL",
+            "Amazon Athena"
+          ]
+        },
+        {
+          "id": "exp-aspectratio-4",
+          "text": "Engineered cloud-based data pipelines to automate forensic analytics and feature engineering, reducing manual reporting overhead by 25% and driving insights that informed system decommissioning, yielding a multi-million-dollar cost optimization",
+          "priority": "med",
+          "keywords": [
+            "cloud-based data pipelines",
+            "forensic analytics",
+            "feature engineering",
+            "cost optimization"
+          ]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-intuit-hackathon",
+      "name": "Intuit NYC AI/ML 2026 Hackathon (Overall Rank #8)",
+      "link": "https://github.com/SaurabhVelankar/intuit-ai-ml-hackathon-2026",
+      "linkLabel": "Link",
+      "start": "Jun 2026",
+      "end": "Jun 2026",
+      "roleTags": [
+        "data_science",
+        "ml",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "proj-intuit-1",
+          "text": "Engineered an underwriting pipeline via HistGradientBoosting and Isotonic regression for calibrated Probability of Default estimates, achieving 0.764 AUC across 13,300+ applicants with 90% Wilson intervals.",
+          "priority": "high",
+          "keywords": [
+            "underwriting pipeline",
+            "HistGradientBoosting",
+            "Isotonic regression",
+            "Probability of Default",
+            "AUC",
+            "Wilson intervals"
+          ]
+        },
+        {
+          "id": "proj-intuit-2",
+          "text": "Designed an Expected NPV-based decisioning engine to drive loan approvals via break-even thresholds instead of static classification, maximizing portfolio returns to yield $16.4M profit.",
+          "priority": "high",
+          "keywords": [
+            "NPV-based decisioning engine",
+            "loan approvals",
+            "break-even thresholds",
+            "portfolio returns",
+            "profit"
+          ]
+        },
+        {
+          "id": "proj-intuit-3",
+          "text": "Developed discrete-time hazard models to forecast cohort risk and counterfactuals, implementing monotonic constraints and causal safeguards to output 1,000+ uncertainty-consistent predictions.",
+          "priority": "med",
+          "keywords": [
+            "hazard models",
+            "cohort risk",
+            "counterfactuals",
+            "monotonic constraints",
+            "causal safeguards",
+            "uncertainty-consistent predictions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proj-pico-llm",
+      "name": "Custom Decoder-Only Transformer & LLM Pre-training",
+      "link": "https://github.com/SaurabhVelankar/pico-llm",
+      "linkLabel": "Link",
+      "start": "Jan 2026",
+      "end": "Feb 2026",
+      "roleTags": [
+        "ml",
+        "swe",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "proj-pico-1",
+          "text": "Engineered a PyTorch GPT-style Transformer from scratch, implementing Multi-Head Causal Attention and Pre-Norm RMS-Normalization to achieve ~4.5 baseline perplexity on a custom corpus.",
+          "priority": "high",
+          "keywords": [
+            "PyTorch",
+            "GPT-style Transformer",
+            "Multi-Head Causal Attention",
+            "Pre-Norm RMS-Normalization",
+            "perplexity"
+          ]
+        },
+        {
+          "id": "proj-pico-2",
+          "text": "Resolved VRAM bottlenecks and exploding gradients via a custom optimization loop utilizing Gradient Clipping, AdamW, and OneCycleLR scheduling.",
+          "priority": "high",
+          "keywords": [
+            "VRAM bottlenecks",
+            "exploding gradients",
+            "optimization loop",
+            "Gradient Clipping",
+            "AdamW",
+            "OneCycleLR scheduling"
+          ]
+        },
+        {
+          "id": "proj-pico-3",
+          "text": "Reduced GPU memory consumption by ~75% and accelerated convergence, enabling stable multi-epoch pre-training without OOM failures.",
+          "priority": "med",
+          "keywords": [
+            "GPU memory consumption",
+            "accelerated convergence",
+            "multi-epoch pre-training",
+            "OOM failures"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proj-shrdlu",
+      "name": "SHRDLU -- An LLM Based 3D Spatial Reasoning Model",
+      "link": "https://shrdlu-ai.vercel.app/",
+      "linkLabel": "Live Website",
+      "start": "Dec 2025",
+      "end": "Jan 2026",
+      "roleTags": [
+        "ml",
+        "swe",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "proj-shrdlu-1",
+          "text": "Engineered an autonomous agentic system via OpenAI API and JavaScript to execute complex natural language commands, dynamically updating virtual coordinates and persisting state via local storage.",
+          "priority": "high",
+          "keywords": [
+            "autonomous agentic system",
+            "OpenAI API",
+            "JavaScript",
+            "natural language commands",
+            "virtual coordinates",
+            "local storage"
+          ]
+        },
+        {
+          "id": "proj-shrdlu-2",
+          "text": "Achieved ~90% instruction accuracy on multi-step commands with <3s latency, seamlessly integrating language understanding with 3D environment control.",
+          "priority": "high",
+          "keywords": [
+            "instruction accuracy",
+            "multi-step commands",
+            "latency",
+            "language understanding",
+            "3D environment control"
+          ]
+        },
+        {
+          "id": "proj-shrdlu-3",
+          "text": "Implemented a context-aware parser utilizing LangChain memory and a real-time RAG pipeline to resolve vague references and consistently interpret ambiguous instructions.",
+          "priority": "med",
+          "keywords": [
+            "context-aware parser",
+            "LangChain memory",
+            "real-time RAG pipeline",
+            "vague references",
+            "ambiguous instructions"
+          ]
+        }
+      ]
+    }
+  ],
+  "research": [
+    {
+      "id": "research-bio-inspired",
+      "title": "Bio-Inspired Vision & Robotics Research",
+      "role": "Graduate Researcher",
+      "organization": "NYU",
+      "link": "https://github.com/SaurabhVelankar/cv_fall2025_icl_humanoids",
+      "linkLabel": "Link",
+      "start": "Nov 2025",
+      "end": "Dec 2025",
+      "roleTags": [
+        "ml",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "research-bio-1",
+          "text": "Developed bio-inspired neuromodulation modules and In-Context Robot Learning (ICRT) pipelines, significantly enhancing out-of-distribution robustness and few-shot adaptability in dynamic proprioceptive environments",
+          "priority": "med",
+          "keywords": [
+            "bio-inspired neuromodulation",
+            "In-Context Robot Learning (ICRT)",
+            "out-of-distribution robustness",
+            "few-shot adaptability",
+            "proprioceptive environments"
+          ]
+        }
+      ]
+    }
+  ],
+  "publications": [],
+  "affiliations": [],
+  "certifications": [],
+  "awards": [
+    {
+      "id": "award-intuit-8",
+      "title": "Intuit NYC AI/ML 2026 Hackathon — Overall Rank #8",
+      "date": "Jun 2026",
+      "notes": "Also reflected on project entry; keep here for DS/ML resume variants that emphasize awards."
+    }
+  ],
+  "coursework_highlights": [
+    "Machine Learning",
+    "Computer Vision",
+    "Deep Learning",
+    "Big Data Science",
+    "Operating Systems",
+    "Data Structures"
+  ],
+  "sectionOrder": {
+    "default": [
+      "header",
+      "education",
+      "skills",
+      "experience",
+      "projects",
+      "research"
+    ],
+    "byRoleFamily": {
+      "ml": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects",
+        "research"
+      ],
+      "data_science": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects",
+        "awards",
+        "research"
+      ],
+      "swe": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects"
+      ],
+      "data_engineering": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects"
+      ],
+      "other": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects",
+        "research"
+      ]
+    }
+  },
+  "roleFamilyPresets": {
+    "ml": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "ai_ml_frameworks",
+        "mlops_cloud",
+        "genai_agentic"
+      ]
+    },
+    "data_science": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "data_science_stack",
+        "ai_ml_frameworks",
+        "mlops_cloud",
+        "genai_agentic"
+      ],
+      "notes": "Prefer 'Data Science Stack' / 'NLP & Applied GenAI' labels over pure GenAI branding when JD is DS-heavy."
+    },
+    "swe": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "swe_stack",
+        "mlops_cloud",
+        "genai_agentic",
+        "databases_storage"
+      ]
+    },
+    "data_engineering": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "data_engineering_stack",
+        "mlops_cloud",
+        "databases_storage",
+        "ai_ml_frameworks"
+      ]
+    },
+    "other": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "ai_ml_frameworks",
+        "mlops_cloud",
+        "genai_agentic"
+      ]
+    }
+  },
+  "meta": {
+    "sourceTemplate": "data/template.tex",
+    "lockedContentPolicy": "Bullets/skills here are the truthful master. Modes may rephrase or reorder; Aggressive may stretch only within doNotClaim rules.",
+    "optionalSectionsReady": [
+      "summary",
+      "objective",
+      "publications",
+      "certifications",
+      "awards",
+      "coursework_highlights",
+      "visualization_bi"
+    ],
+    "lastMakeMetadata": "2024-07-30T12:00:00Z"
+  }
+}
