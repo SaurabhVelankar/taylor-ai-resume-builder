@@ -1,17 +1,17 @@
 {
   "basics": {
-    "name": "Saurabh Sanjay Velankar",
-    "email": "sauri2010@gmail.com",
-    "phone": "(929)-620-7765",
+    "name": "John Doe",
+    "email": "example@gmail.com",
+    "phone": "(123)-456-7890",
     "location": "New York, NY",
     "links": [
       {
-        "label": "linkedin.com/in/saurabhv12",
-        "url": "https://linkedin.com/in/saurabhv12"
+        "label": "linkedin.com/in/johndoe",
+        "url": "https://linkedin.com/in/johndoe"
       },
       {
-        "label": "github.com/SaurabhVelankar",
-        "url": "https://github.com/SaurabhVelankar"
+        "label": "github.com/JohnDoe",
+        "url": "https://github.com/JohnDoe"
       }
     ]
   },
@@ -206,40 +206,26 @@
     {
       "id": "edu-ms-nyu",
       "degree": "Master of Science in Computer Science",
-      "school": "New York University, Courant Institute",
+      "school": "Example Uni",
       "location": "New York, NY",
-      "start": "Aug 2024",
-      "end": "May 2026",
+      "start": "Aug 20XX",
+      "end": "May 20XX",
       "gpa": "3.6",
       "courses": [
         "Machine Learning",
-        "Computer Vision",
-        "Deep Learning",
-        "Big Data Science",
-        "Operating Systems",
-        "Data Structures"
+        "Computer Vision"
       ]
-    },
-    {
-      "id": "edu-btech-pune",
-      "degree": "Bachelor of Technology in Information Technology",
-      "school": "Pune University",
-      "location": "Pune, India",
-      "start": "Aug 2018",
-      "end": "May 2022",
-      "gpa": "3.7",
-      "courses": []
     }
   ],
   "experience": [
     {
-      "id": "exp-nyu-frl",
-      "title": "AI Engineer, Research",
-      "organization": "NYU Future Reality Lab",
+      "id": "swe-example",
+      "title": "SWE",
+      "organization": "Example Inc",
       "location": "New York, NY",
-      "start": "Jan 2026",
+      "start": "Jan 20XX",
       "end": "Present",
-      "link": "https://github.com/RayChen666",
+      "link": "",
       "roleTags": [
         "ml",
         "swe",
@@ -247,96 +233,11 @@
       ],
       "bullets": [
         {
-          "id": "exp-nyu-frl-1",
-          "text": "Architected an LLM-driven Multi-Agent XR system translating natural language into deterministic 3D spatial operations by fusing JSON environment data and real-time VR telemetry to resolve relative spatial intents.",
+          "id": "swe-example",
+          "text": "Super cool stuff you wouldn't understand! Oh yeah!",
           "priority": "high",
           "keywords": [
-            "LLM",
-            "Multi-Agent",
-            "XR",
-            "natural language",
-            "3D spatial operations",
-            "JSON",
-            "VR telemetry"
-          ]
-        },
-        {
-          "id": "exp-nyu-frl-2",
-          "text": "Engineered a probabilistic intent-resolution pipeline utilizing a complex router, contextual memory, and a Verification Agent to autonomously disambiguate commands, achieving 90% zero-shot success.",
-          "priority": "high",
-          "keywords": [
-            "probabilistic intent-resolution",
-            "router",
-            "contextual memory",
-            "Verification Agent",
-            "zero-shot success"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "exp-aspectratio",
-      "title": "Quantitative Data Analyst",
-      "organization": "AspectRatio Pvt. Ltd.",
-      "location": "Pune, India",
-      "start": "Dec 2021",
-      "end": "Mar 2024",
-      "link": null,
-      "roleTags": [
-        "data_science",
-        "ml",
-        "data_engineering",
-        "other"
-      ],
-      "bullets": [
-        {
-          "id": "exp-aspectratio-1",
-          "text": "Spearheaded an NLP feature extraction pipeline using spaCy to parse 10k unstructured physician transcripts, successfully identifying clinical markers for bladder cancer with an 87% Recall",
-          "priority": "high",
-          "keywords": [
-            "NLP",
-            "feature extraction",
-            "spaCy",
-            "physician transcripts",
-            "clinical markers",
-            "bladder cancer",
-            "Recall"
-          ]
-        },
-        {
-          "id": "exp-aspectratio-2",
-          "text": "Designed and executed large-scale statistical experiments for an outreach campaign, applying Kaplan-Meier survival analysis and risk modeling on a 2M-subject cohort to quantify a 30% improvement in patient outcomes",
-          "priority": "high",
-          "keywords": [
-            "statistical experiments",
-            "Kaplan-Meier survival analysis",
-            "risk modeling",
-            "patient outcomes"
-          ]
-        },
-        {
-          "id": "exp-aspectratio-3",
-          "text": "Prototyped predictive XGBoost/Random Forest models to evaluate competitive dynamics and drug adoption, orchestrating the extraction of patient-level data from AWS Redshift using Python, SQL, and Amazon Athena",
-          "priority": "high",
-          "keywords": [
-            "XGBoost",
-            "Random Forest",
-            "predictive models",
-            "AWS Redshift",
-            "Python",
-            "SQL",
-            "Amazon Athena"
-          ]
-        },
-        {
-          "id": "exp-aspectratio-4",
-          "text": "Engineered cloud-based data pipelines to automate forensic analytics and feature engineering, reducing manual reporting overhead by 25% and driving insights that informed system decommissioning, yielding a multi-million-dollar cost optimization",
-          "priority": "med",
-          "keywords": [
-            "cloud-based data pipelines",
-            "forensic analytics",
-            "feature engineering",
-            "cost optimization"
+            "LLM"
           ]
         }
       ]
@@ -344,12 +245,12 @@
   ],
   "projects": [
     {
-      "id": "proj-intuit-hackathon",
-      "name": "Intuit NYC AI/ML 2026 Hackathon (Overall Rank #8)",
-      "link": "https://github.com/SaurabhVelankar/intuit-ai-ml-hackathon-2026",
+      "id": "cool-project",
+      "name": "Cool Project",
+      "link": "https://github.com/JohnDoes/cool-project",
       "linkLabel": "Link",
-      "start": "Jun 2026",
-      "end": "Jun 2026",
+      "start": "Jun 20XX",
+      "end": "Jun 20XX",
       "roleTags": [
         "data_science",
         "ml",
@@ -367,134 +268,6 @@
             "Probability of Default",
             "AUC",
             "Wilson intervals"
-          ]
-        },
-        {
-          "id": "proj-intuit-2",
-          "text": "Designed an Expected NPV-based decisioning engine to drive loan approvals via break-even thresholds instead of static classification, maximizing portfolio returns to yield $16.4M profit.",
-          "priority": "high",
-          "keywords": [
-            "NPV-based decisioning engine",
-            "loan approvals",
-            "break-even thresholds",
-            "portfolio returns",
-            "profit"
-          ]
-        },
-        {
-          "id": "proj-intuit-3",
-          "text": "Developed discrete-time hazard models to forecast cohort risk and counterfactuals, implementing monotonic constraints and causal safeguards to output 1,000+ uncertainty-consistent predictions.",
-          "priority": "med",
-          "keywords": [
-            "hazard models",
-            "cohort risk",
-            "counterfactuals",
-            "monotonic constraints",
-            "causal safeguards",
-            "uncertainty-consistent predictions"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "proj-pico-llm",
-      "name": "Custom Decoder-Only Transformer & LLM Pre-training",
-      "link": "https://github.com/SaurabhVelankar/pico-llm",
-      "linkLabel": "Link",
-      "start": "Jan 2026",
-      "end": "Feb 2026",
-      "roleTags": [
-        "ml",
-        "swe",
-        "other"
-      ],
-      "bullets": [
-        {
-          "id": "proj-pico-1",
-          "text": "Engineered a PyTorch GPT-style Transformer from scratch, implementing Multi-Head Causal Attention and Pre-Norm RMS-Normalization to achieve ~4.5 baseline perplexity on a custom corpus.",
-          "priority": "high",
-          "keywords": [
-            "PyTorch",
-            "GPT-style Transformer",
-            "Multi-Head Causal Attention",
-            "Pre-Norm RMS-Normalization",
-            "perplexity"
-          ]
-        },
-        {
-          "id": "proj-pico-2",
-          "text": "Resolved VRAM bottlenecks and exploding gradients via a custom optimization loop utilizing Gradient Clipping, AdamW, and OneCycleLR scheduling.",
-          "priority": "high",
-          "keywords": [
-            "VRAM bottlenecks",
-            "exploding gradients",
-            "optimization loop",
-            "Gradient Clipping",
-            "AdamW",
-            "OneCycleLR scheduling"
-          ]
-        },
-        {
-          "id": "proj-pico-3",
-          "text": "Reduced GPU memory consumption by ~75% and accelerated convergence, enabling stable multi-epoch pre-training without OOM failures.",
-          "priority": "med",
-          "keywords": [
-            "GPU memory consumption",
-            "accelerated convergence",
-            "multi-epoch pre-training",
-            "OOM failures"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "proj-shrdlu",
-      "name": "SHRDLU -- An LLM Based 3D Spatial Reasoning Model",
-      "link": "https://shrdlu-ai.vercel.app/",
-      "linkLabel": "Live Website",
-      "start": "Dec 2025",
-      "end": "Jan 2026",
-      "roleTags": [
-        "ml",
-        "swe",
-        "other"
-      ],
-      "bullets": [
-        {
-          "id": "proj-shrdlu-1",
-          "text": "Engineered an autonomous agentic system via OpenAI API and JavaScript to execute complex natural language commands, dynamically updating virtual coordinates and persisting state via local storage.",
-          "priority": "high",
-          "keywords": [
-            "autonomous agentic system",
-            "OpenAI API",
-            "JavaScript",
-            "natural language commands",
-            "virtual coordinates",
-            "local storage"
-          ]
-        },
-        {
-          "id": "proj-shrdlu-2",
-          "text": "Achieved ~90% instruction accuracy on multi-step commands with <3s latency, seamlessly integrating language understanding with 3D environment control.",
-          "priority": "high",
-          "keywords": [
-            "instruction accuracy",
-            "multi-step commands",
-            "latency",
-            "language understanding",
-            "3D environment control"
-          ]
-        },
-        {
-          "id": "proj-shrdlu-3",
-          "text": "Implemented a context-aware parser utilizing LangChain memory and a real-time RAG pipeline to resolve vague references and consistently interpret ambiguous instructions.",
-          "priority": "med",
-          "keywords": [
-            "context-aware parser",
-            "LangChain memory",
-            "real-time RAG pipeline",
-            "vague references",
-            "ambiguous instructions"
           ]
         }
       ]
@@ -533,22 +306,8 @@
   "publications": [],
   "affiliations": [],
   "certifications": [],
-  "awards": [
-    {
-      "id": "award-intuit-8",
-      "title": "Intuit NYC AI/ML 2026 Hackathon — Overall Rank #8",
-      "date": "Jun 2026",
-      "notes": "Also reflected on project entry; keep here for DS/ML resume variants that emphasize awards."
-    }
-  ],
-  "coursework_highlights": [
-    "Machine Learning",
-    "Computer Vision",
-    "Deep Learning",
-    "Big Data Science",
-    "Operating Systems",
-    "Data Structures"
-  ],
+  "awards": [],
+  "coursework_highlights": [],
   "sectionOrder": {
     "default": [
       "header",
