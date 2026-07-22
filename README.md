@@ -1,4 +1,4 @@
-# Tailor Resume AI
+# Taylor — Resume AI
 
 A local-first web app that tailors your **LaTeX resume to each job description** for
 better ATS keyword alignment. Paste a JD (or a public job URL), pick how aggressive you
@@ -80,14 +80,12 @@ mocked AI immediately. To get a real compiled PDF you still need Tectonic instal
 
 ---
 
-## Friend walkthrough (~10 minutes)
-
-Cold-start path so someone else can use Taylor without you in the room:
+## Example walkthrough:
 
 1. **Install** Node 20+, then Tectonic ([Installing Tectonic](#installing-tectonic)).
 2. **Clone →** `npm install` → copy `.env.example` to `.env.local`.
-3. Set `NEXT_PUBLIC_RESUME_OWNER_NAME` to their name. Optionally add `GEMINI_API_KEY` and set `DEMO_MODE=false` for real AI (otherwise explore in demo mode).
-4. **Put their resume in** — replace `data/template_ml.tex` (keep the section markers like `SKILLS_START` / `EXPERIENCE_START`). Optional: add `template_ds.tex` / `template_swe.tex` for other archetypes.
+3. Set `NEXT_PUBLIC_RESUME_OWNER_NAME` to your name. Optionally add `GEMINI_API_KEY` and set `DEMO_MODE=false` for real AI (otherwise explore in demo mode).
+4. **Put your resume in** — replace `data/template_ml.tex` (importantly, keep the section markers like `SKILLS_START` / `EXPERIENCE_START`). Optional: add `template_ds.tex` / `template_swe.tex` for other archetypes.
 5. Run `npm run dev` → open [http://localhost:3000](http://localhost:3000).
 6. Click **Make MetaData** — builds `master_resume_<type>.json` for every `template_*.tex`. Check the per-type results panel (✓ / ✗). Do this once whenever you change a template.
 7. Paste a JD (or a public job URL) → **Parse** — controls prefill; **Resume type** auto-picks when a matching archetype exists (`data_science→ds`, `ml→ml`, `swe→swe`, else `ml`).
@@ -172,7 +170,7 @@ All config lives in `.env.local` (copied from `.env.example`):
 
 ## Use your own resume
 
-This repo ships with a sample `data/template_ml.tex` and `data/master_resume_ml.json`.
+This repo ships with a sample `data/template_ml.tex` and `data/master_resume_ml.json`, which contains Lorem Ipsum text.
 To make it yours:
 
 1. Replace `data/template_ml.tex` with your own LaTeX resume, **keeping the section markers**
@@ -205,8 +203,8 @@ See [MultiMaster.MD](./MultiMaster.MD) for the design.
 
 ### Application tracker
 
-After a cascade you’re happy with, click **I Applied ✓** (you stay in control — download
-does not auto-track). Taylor saves a local record under `data/applications/` (gitignored):
+After a cascade you’re happy with, click **I Applied ✓**.
+Taylor saves a local record under `data/applications/`:
 company, role, mode, resume type, keywords, ATS coverage, “what changed”, and the tailored
 `.tex` source. Open **My Applications** to browse the table, re-download/compile past TeX,
 and check pace analytics. See [Tracker.MD](./Tracker.MD) for the schema and adapter plan.
@@ -233,27 +231,6 @@ JD (paste or URL)
 Agents edit **structured JSON**, which is deterministically rendered into a frozen LaTeX
 template — keeping output stable and one-page-safe. See [GAMEPLAN.md](./GAMEPLAN.md) for
 the full design.
-
----
-
-## Project structure
-
-```
-src/app            UI + API routes (/api/parse, /api/tailor, /api/metadata, /api/resume/*, /api/applications, /api/resume-types)
-src/app/applications  Tracker table + pace analytics
-src/components     Workbench UI (Taylor) + TrackerAnalytics
-src/lib/agents     Cascade agents + prompts
-src/lib/ingest     JD URL fetch + HTML→text
-src/lib/gemini     Gemini client (+ demo-mode fallback)
-src/lib/latex      Template render + Tectonic compile + filenames
-src/lib/pdf        Real page-count + one-page gate
-src/lib/resume     Multi-master discovery + master load/normalize
-src/lib/tracker    Application store adapter + stats
-data/              template_<type>.tex + master_resume_<type>.json (your resumes live here)
-data/applications/ Saved applications (gitignored)
-runs/              Per-job compiled artifacts (gitignored)
-tools/bin/         Local Tectonic binary (gitignored)
-```
 
 ---
 
