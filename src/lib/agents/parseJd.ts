@@ -41,9 +41,25 @@ function mockSuggestions(jdText: string): JdSuggestions {
 
   const titleLine = jdText.split("\n").map((l) => l.trim()).find(Boolean) ?? "";
 
+  let company: string | null = null;
+  const companyPatterns = [
+    /(?:^|\n)\s*(?:company|employer|organization)\s*[:\-]\s*([^\n]+)/i,
+    /\bat\s+([A-Z][A-Za-z0-9&.\- ]{2,40})(?:\s*[,\|]|\s*$|\s*\()/,
+    /[-–—]\s*([A-Z][A-Za-z0-9&.\- ]{2,40})\s*(?:\(|$|\n)/,
+    /(?:^|\n)\s*([A-Z][A-Za-z0-9&.\- ]{2,40})\s+is hiring/i,
+  ];
+  for (const pattern of companyPatterns) {
+    const m = jdText.match(pattern);
+    const candidate = m?.[1]?.trim().replace(/\s+/g, " ");
+    if (candidate && candidate.length >= 2 && candidate.length <= 60) {
+      company = candidate;
+      break;
+    }
+  }
+
   return JdSuggestionsSchema.parse({
     title: titleLine.slice(0, 120),
-    company: null,
+    company,
     location,
     roleFamily,
     seniority,

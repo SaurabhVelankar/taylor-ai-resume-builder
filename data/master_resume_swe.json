@@ -1,0 +1,422 @@
+{
+  "basics": {
+    "name": "John Doe",
+    "email": "example@gmail.com",
+    "phone": "(123)-456-7890",
+    "location": "New York, NY",
+    "links": [
+      {
+        "label": "linkedin.com/in/johndoe",
+        "url": "https://linkedin.com/in/johndoe"
+      },
+      {
+        "label": "github.com/JohnDoe",
+        "url": "https://github.com/JohnDoe"
+      }
+    ]
+  },
+  "summary": "",
+  "objective": "",
+  "skills": {
+    "groups": [
+      {
+        "id": "programming_languages",
+        "label": "Programming Languages",
+        "items": [
+          "Python",
+          "C++",
+          "SQL",
+          "R",
+          "JavaScript"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "data_engineering",
+          "other"
+        ]
+      },
+      {
+        "id": "ai_ml_frameworks",
+        "label": "AI/ML Frameworks",
+        "altLabels": {
+          "data_science": "Data Science & ML Libraries",
+          "ml": "AI/ML Frameworks",
+          "swe": "ML / Backend Libraries"
+        },
+        "items": [
+          "PyTorch",
+          "TensorFlow",
+          "Hugging Face Transformers",
+          "Scikit-Learn",
+          "NLTK"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "other"
+        ]
+      },
+      {
+        "id": "genai_agentic",
+        "label": "GenAI & Agentic Workflows",
+        "altLabels": {
+          "data_science": "NLP & Applied GenAI",
+          "ml": "GenAI & Agentic Workflows",
+          "swe": "LLM Apps & Agent Tooling",
+          "data_engineering": "LLM / RAG Data Pipelines"
+        },
+        "items": [
+          "RAG Architecture",
+          "LangChain",
+          "Agent Skills",
+          "Markdown",
+          "Model Context Protocol",
+          "OpenAI API",
+          "Gemini API",
+          "Cursor",
+          "Claude",
+          "Vector Databases (Pinecone, Chroma)",
+          "Semantic Search"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "other"
+        ]
+      },
+      {
+        "id": "mlops_cloud",
+        "label": "MLOps & Cloud",
+        "altLabels": {
+          "data_engineering": "Data Engineering & Cloud",
+          "swe": "Cloud & DevOps",
+          "data_science": "Cloud & Experiment Infrastructure",
+          "ml": "MLOps & Cloud"
+        },
+        "items": [
+          "AWS",
+          "Azure",
+          "Docker",
+          "Apache Kafka",
+          "Kubernetes",
+          "Git/GitHub",
+          "Linux"
+        ],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "data_engineering",
+          "other"
+        ]
+      },
+      {
+        "id": "data_science_stack",
+        "label": "Data Science Stack",
+        "altLabels": {
+          "data_science": "Data Science Stack",
+          "ml": "Stats & Modeling",
+          "data_engineering": "Analytics & Warehousing"
+        },
+        "items": [],
+        "roleRelevance": [
+          "data_science",
+          "ml",
+          "other"
+        ],
+        "includeByDefault": false,
+        "notes": "Useful when retargeting from ML/GenAI toward DS; toggle/label via roleFamily."
+      },
+      {
+        "id": "data_engineering_stack",
+        "label": "Data Engineering Stack",
+        "altLabels": {
+          "data_engineering": "Data Engineering Stack",
+          "swe": "Data / Platform",
+          "data_science": "Data Pipelines"
+        },
+        "items": [],
+        "roleRelevance": [
+          "data_engineering",
+          "data_science",
+          "swe",
+          "other"
+        ],
+        "includeByDefault": false
+      },
+      {
+        "id": "swe_stack",
+        "label": "Software Engineering Stack",
+        "altLabels": {
+          "swe": "Software Engineering Stack",
+          "ml": "Systems & Tooling",
+          "data_engineering": "Application Layer"
+        },
+        "items": [],
+        "roleRelevance": [
+          "swe",
+          "ml",
+          "other"
+        ],
+        "includeByDefault": false
+      },
+      {
+        "id": "databases_storage",
+        "label": "Databases & Storage",
+        "items": [],
+        "roleRelevance": [
+          "data_engineering",
+          "data_science",
+          "swe",
+          "ml",
+          "other"
+        ],
+        "includeByDefault": false
+      },
+      {
+        "id": "visualization_bi",
+        "label": "Visualization & BI",
+        "items": [],
+        "roleRelevance": [
+          "data_science",
+          "other"
+        ],
+        "includeByDefault": false,
+        "notes": "Fill when truthful (Tableau, matplotlib, etc.)."
+      },
+      {
+        "id": "soft_collaboration",
+        "label": "Collaboration",
+        "items": [],
+        "roleRelevance": [
+          "ml",
+          "data_science",
+          "swe",
+          "data_engineering",
+          "other"
+        ],
+        "includeByDefault": false
+      }
+    ]
+  },
+  "education": [
+    {
+      "id": "edu-ms-nyu",
+      "degree": "Master of Science in Computer Science",
+      "school": "Example Uni",
+      "location": "New York, NY",
+      "start": "Aug 20XX",
+      "end": "May 20XX",
+      "gpa": "3.6",
+      "courses": [
+        "Machine Learning",
+        "Computer Vision"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "id": "swe-example",
+      "title": "SWE",
+      "organization": "Example Inc",
+      "location": "New York, NY",
+      "start": "Jan 20XX",
+      "end": "Present",
+      "link": "",
+      "roleTags": [
+        "ml",
+        "swe",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "swe-example",
+          "text": "Super cool stuff you wouldn't understand! Oh yeah!",
+          "priority": "high",
+          "keywords": [
+            "LLM"
+          ]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "cool-project",
+      "name": "Cool Project",
+      "link": "https://github.com/JohnDoes/cool-project",
+      "linkLabel": "Link",
+      "start": "Jun 20XX",
+      "end": "Jun 20XX",
+      "roleTags": [
+        "data_science",
+        "ml",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "proj-intuit-1",
+          "text": "Engineered an underwriting pipeline via HistGradientBoosting and Isotonic regression for calibrated Probability of Default estimates, achieving 0.764 AUC across 13,300+ applicants with 90% Wilson intervals.",
+          "priority": "high",
+          "keywords": [
+            "underwriting pipeline",
+            "HistGradientBoosting",
+            "Isotonic regression",
+            "Probability of Default",
+            "AUC",
+            "Wilson intervals"
+          ]
+        }
+      ]
+    }
+  ],
+  "research": [
+    {
+      "id": "research-bio-inspired",
+      "title": "Bio-Inspired Vision & Robotics Research",
+      "role": "Graduate Researcher",
+      "organization": "NYU",
+      "link": "https://github.com/SaurabhVelankar/cv_fall2025_icl_humanoids",
+      "linkLabel": "Link",
+      "start": "Nov 2025",
+      "end": "Dec 2025",
+      "roleTags": [
+        "ml",
+        "other"
+      ],
+      "bullets": [
+        {
+          "id": "research-bio-1",
+          "text": "Developed bio-inspired neuromodulation modules and In-Context Robot Learning (ICRT) pipelines, significantly enhancing out-of-distribution robustness and few-shot adaptability in dynamic proprioceptive environments",
+          "priority": "med",
+          "keywords": [
+            "bio-inspired neuromodulation",
+            "In-Context Robot Learning (ICRT)",
+            "out-of-distribution robustness",
+            "few-shot adaptability",
+            "proprioceptive environments"
+          ]
+        }
+      ]
+    }
+  ],
+  "publications": [],
+  "affiliations": [],
+  "certifications": [],
+  "awards": [],
+  "coursework_highlights": [],
+  "sectionOrder": {
+    "default": [
+      "header",
+      "education",
+      "skills",
+      "experience",
+      "projects",
+      "research"
+    ],
+    "byRoleFamily": {
+      "ml": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects",
+        "research"
+      ],
+      "data_science": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects",
+        "awards",
+        "research"
+      ],
+      "swe": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects"
+      ],
+      "data_engineering": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects"
+      ],
+      "other": [
+        "header",
+        "education",
+        "skills",
+        "experience",
+        "projects",
+        "research"
+      ]
+    }
+  },
+  "roleFamilyPresets": {
+    "ml": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "ai_ml_frameworks",
+        "mlops_cloud",
+        "genai_agentic"
+      ]
+    },
+    "data_science": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "data_science_stack",
+        "ai_ml_frameworks",
+        "mlops_cloud",
+        "genai_agentic"
+      ],
+      "notes": "Prefer 'Data Science Stack' / 'NLP & Applied GenAI' labels over pure GenAI branding when JD is DS-heavy."
+    },
+    "swe": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "swe_stack",
+        "mlops_cloud",
+        "genai_agentic",
+        "databases_storage"
+      ]
+    },
+    "data_engineering": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "data_engineering_stack",
+        "mlops_cloud",
+        "databases_storage",
+        "ai_ml_frameworks"
+      ]
+    },
+    "other": {
+      "skillsGroupIds": [
+        "programming_languages",
+        "ai_ml_frameworks",
+        "mlops_cloud",
+        "genai_agentic"
+      ]
+    }
+  },
+  "meta": {
+    "sourceTemplate": "data/template.tex",
+    "lockedContentPolicy": "Bullets/skills here are the truthful master. Modes may rephrase or reorder; Aggressive may stretch only within doNotClaim rules.",
+    "optionalSectionsReady": [
+      "summary",
+      "objective",
+      "publications",
+      "certifications",
+      "awards",
+      "coursework_highlights",
+      "visualization_bi"
+    ],
+    "lastMakeMetadata": "2024-07-30T12:00:00Z"
+  }
+}

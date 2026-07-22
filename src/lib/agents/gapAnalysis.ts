@@ -15,6 +15,9 @@ function mockGap(keywords: KeywordExtract): GapAnalysis {
     missing: high.slice(mid),
     stretch: keywords.niceToHaveLow.slice(0, 3),
     doNotClaim: ["Staff-level architecture ownership (unless true in master)"],
+    themesCovered: keywords.themes.slice(0, 5).map(
+      (t) => `${t} → supported by master experience/skills`,
+    ),
   });
 }
 

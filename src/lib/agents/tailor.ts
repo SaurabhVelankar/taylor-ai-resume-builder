@@ -1,6 +1,11 @@
 import { fillTemplate, PROMPT_PLACEHOLDERS } from "@/lib/agents/prompts";
 import { generateJson, isDemoMode } from "@/lib/gemini/client";
 import {
+  ensureSingleCompleteSentence,
+  loadMasterResume,
+  sanitizePlainText,
+} from "@/lib/resume/master";
+import {
   GapAnalysis,
   KeywordExtract,
   TailorControls,
@@ -8,42 +13,76 @@ import {
   TailoredResumeSchema,
 } from "@/lib/types";
 
-function mockTailor(
+function stripTailored(resume: TailoredResume): TailoredResume {
+  return TailoredResumeSchema.parse({
+    skillGroups: resume.skillGroups.map((g) => ({
+      ...g,
+      label: sanitizePlainText(g.label),
+      items: g.items.map(sanitizePlainText).filter(Boolean),
+    })),
+    experience: resume.experience.map((e) => ({
+      ...e,
+      bullets: e.bullets.map((b) => ({
+        ...b,
+        text: ensureSingleCompleteSentence(b.text),
+      })),
+    })),
+    notesForUser: resume.notesForUser.map(sanitizePlainText),
+  });
+}
+
+async function mockTailor(
   controls: TailorControls,
   keywords: KeywordExtract,
   gap: GapAnalysis,
-): TailoredResume {
+  resumeType: string,
+): Promise<TailoredResume> {
+  const master = await loadMasterResume(resumeType);
   const high = keywords.mustHaveHigh.slice(0, 5);
-  return TailoredResumeSchema.parse({
-    summary: `[STUB ${controls.mode}] Targeted ${controls.roleFamily} summary mentioning: ${high.join(", ") || "n/a"}. Location framing: ${controls.location || "n/a"}.`,
-    skillsBlurb: high.join(", ") || "Skills TBD",
-    experienceBullets: [
-      {
-        id: "exp-1",
-        text: `[STUB] Highlight overlap skills (${gap.overlaps.slice(0, 3).join(", ") || "none"}).`,
-        priority: "high",
-        keywords: gap.overlaps.slice(0, 3),
-      },
-      {
-        id: "exp-2",
-        text: `[STUB] Address stretch items carefully (${gap.stretch.slice(0, 2).join(", ") || "none"}).`,
-        priority: "med",
-        keywords: gap.stretch.slice(0, 2),
-      },
-      {
-        id: "exp-3",
-        text: `[STUB] Low-priority color; first to drop on 1-page overflow.`,
-        priority: "low",
-        keywords: [],
-      },
-    ],
-    notesForUser: [
-      "Tailor step used placeholder prompt / demo output.",
-      ...(gap.doNotClaim.length
-        ? [`Do not claim: ${gap.doNotClaim.join("; ")}`]
-        : []),
-    ],
-  });
+  const sparse = high.length + keywords.tools.length < 3;
+
+  const skillGroups = master.skills.groups
+    .filter((g) => g.id !== "soft_collaboration")
+    .slice(0, 4)
+    .map((g) => ({
+      groupId: g.id,
+      label: g.label,
+      items: sparse
+        ? g.items.slice(0, 8)
+        : [...g.items.slice(0, 4), ...high.slice(0, 2)].slice(0, 8),
+    }));
+
+  const themeHint = keywords.themes.slice(0, 2).join(", ");
+  const experience = master.experience.map((job) => ({
+    id: job.id,
+    bullets: job.bullets.map((b, i) => ({
+      id: b.id,
+      text:
+        i === 0 && (gap.overlaps[0] || themeHint)
+          ? `${b.text} (${(gap.overlaps.slice(0, 2).join(", ") || themeHint)})`
+          : b.text,
+      priority: b.priority ?? ("med" as const),
+      keywords: b.keywords ?? [],
+    })),
+  }));
+
+  return stripTailored(
+    TailoredResumeSchema.parse({
+      skillGroups,
+      experience,
+      notesForUser: [
+        "DEMO_MODE tailor stub.",
+        ...(sparse
+          ? [
+              `Sparse JD — reframed bullets toward themes (${keywords.themes.slice(0, 4).join(", ") || "n/a"}); did not inject vague skill labels.`,
+            ]
+          : []),
+        ...(gap.doNotClaim.length
+          ? [`Do not claim: ${gap.doNotClaim.join("; ")}`]
+          : []),
+      ],
+    }),
+  );
 }
 
 export async function tailorResume(args: {
@@ -52,10 +91,16 @@ export async function tailorResume(args: {
   keywords: KeywordExtract;
   gap: GapAnalysis;
   masterResumeJson: string;
+  resumeType: string;
 }): Promise<{ data: TailoredResume; usedDemo: boolean }> {
   if (isDemoMode()) {
     return {
-      data: mockTailor(args.controls, args.keywords, args.gap),
+      data: await mockTailor(
+        args.controls,
+        args.keywords,
+        args.gap,
+        args.resumeType,
+      ),
       usedDemo: true,
     };
   }
@@ -73,5 +118,8 @@ export async function tailorResume(args: {
     kind: "pro",
   });
 
-  return { data: TailoredResumeSchema.parse(parsed), usedDemo: false };
+  return {
+    data: stripTailored(TailoredResumeSchema.parse(parsed)),
+    usedDemo: false,
+  };
 }

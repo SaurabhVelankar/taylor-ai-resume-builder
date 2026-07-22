@@ -1,0 +1,103 @@
+\documentclass[10pt,letterpaper]{extarticle}
+
+% Packages
+\usepackage[top=0.4in, bottom=0.4in, left=0.45in, right=0.45in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+% Hyperlink Setup
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=blue
+}
+
+
+% Section Formatting - Tighter spacing to ensure 1-page fit
+\titleformat{\section}{\large\bfseries\uppercase}{}{0pt}{}[\titlerule]
+\titlespacing{\section}{0pt}{0.5ex}{0.5ex}
+
+% Global Settings
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+\begin{document}
+
+% === HEADER_START ===
+\begin{center}
+    {\Large \textbf{JOHN DOE}} \\ \vspace{2pt} %[cite: 1]
+    New York, NY | (123)-456-7890 | \href{mailto:example@gmail.com}{example@gmail.com} | \href{https://linkedin.com/in/johndoe}{linkedin.com/in/johndoe} | \href{https://github.com/JohnDoe}{github.com/JohnDoe} %[cite: 1]
+\end{center}
+% === HEADER_END ===
+
+% === EDUCATION_START ===
+\section*{EDUCATION}
+\textbf{Master of Science in Computer Science} \hfill Aug 20XX -- May 20XX \\ %[cite: 1]
+Cool University (New York, NY) \hfill GPA: 4.0 \\ %[cite: 1]
+\textit{Courses: Machine Learning, Computer Vision, Deep Learning} \\ %[cite: 1]
+% === EDUCATION_END ===
+
+% === SKILLS_START ===
+\section*{TECHNICAL SKILLS}
+\textbf{Programming Languages:} Python, C++, SQL, R, JavaScript \\ %[cite: 1]
+\textbf{AI/ML Frameworks:} PyTorch, TensorFlow, Hugging Face Transformers, Scikit-Learn, NLTK \\ %[cite: 1]
+\textbf{MLOps \& Cloud:} AWS, Azure, Docker, Apache Kafka, Kubernetes, Git/GitHub, Linux \\ %[cite: 1]
+\textbf{GenAI \& Agentic Workflows:} RAG Architecture, LangChain, Agent Skills, Markdown, Model Context Protocol, OpenAI API, Gemini API, Cursor, Claude, Vector Databases (Pinecone, Chroma), Semantic Search. %[cite: 1]
+% === SKILLS_END ===
+
+% === EXPERIENCE_START ===
+\section*{WORK EXPERIENCE}
+\textbf{Cool Stuff Engineer} -- \textit{Cool Company, New York, NY} \hfill Jan 20XX -- Present %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+\end{itemize}
+\vspace{2pt}
+
+\textbf{Less Cool Stuff Engineer} -- \textit{Boring Old Company, Santa Clara, CA} \hfill Dec 20XX -- Mar 20XX %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+\end{itemize}
+% === EXPERIENCE_END ===
+
+% === PROJECTS_START ===
+\section*{TECHNICAL PROJECTS}
+\textbf{Project You're Super Proud Of} \href{https://github.com/}{Link} \hfill Jun 20XX -- Jun 20XX %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+\end{itemize}
+\vspace{2pt}
+
+\textbf{Major Project Made in College, Recycled Here} \href{https://github.com/}{Link} \hfill Jun 20XX -- Jun 20XX %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+\end{itemize}
+\vspace{2pt}
+
+\textbf{That One Project You Stole from GitHub} \href{https://github.com/}{Link} \hfill Jun 20XX -- Jun 20XX %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+    \item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+\end{itemize}
+% === PROJECTS_END ===
+
+% === ACADEMIC_RESEARCH_START ===
+\section*{ACHIEVEMENTS}
+\textbf{Some Obscure Thing You Did, Exaggerated Because Why Not} \href{}{Link} \hfill Nov 20XX -- Dec 20XX %[cite: 1]
+\begin{itemize}[leftmargin=*, nosep]
+\item Lorem ipsum dolor sit amet. A incidunt adipisci aut sint atque qui omnis aperiam et magnam modi. Eos incidunt repudiandae et temporibus necessitatibus est consequuntur suscipit. %[cite: 1]
+\end{itemize}
+% === ACADEMIC_RESEARCH_END ===
+
+\end{document}

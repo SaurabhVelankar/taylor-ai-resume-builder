@@ -2,6 +2,9 @@
   "name": "tailor-resume-ai",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +14,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "next": "16.2.10",
+    "pdf-lib": "^1.17.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "zod": "^4.4.3"

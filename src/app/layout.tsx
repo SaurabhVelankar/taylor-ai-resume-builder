@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
 
 const display = Fraunces({
@@ -13,9 +14,22 @@ const body = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  title: "Tailor — Resume AI",
+  title: "Taylor — Resume AI",
   description: "JD-first resume tailoring for ATS keyword alignment",
 };
+
+const themeBootScript = `
+(function(){
+  try {
+    var t = localStorage.getItem('tailor-theme');
+    if (t !== 'light' && t !== 'dark') {
+      t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();`;
 
 export default function RootLayout({
   children,
@@ -25,9 +39,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
-      <body className="min-h-full font-sans text-[var(--ink)]">{children}</body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
+      <body className="min-h-full font-sans text-[var(--ink)]">
+        {children}
+        <ThemeToggle />
+      </body>
     </html>
   );
 }

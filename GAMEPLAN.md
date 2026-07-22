@@ -4,7 +4,7 @@ Local-first webapp for real-time JD → keyword-aligned LaTeX resume, aimed at A
 
 ## Locked product flow
 
-1. **Paste JD first** (URL ingest later).
+1. **JD input = paste text OR public URL** (server fetch + HTML→text). Paste remains first-class for login-gated boards; URL is the lazy path when the posting is public.
 2. **Parse agent** extracts location, role family, seniority, work mode, etc. as **suggestions**.
 3. Suggestions **pre-select dropdowns**; user can override anything before running.
 4. **Mode** stays user-owned (default: Middle Ground). Parse may hint but does not auto-pick Aggressive.
@@ -34,10 +34,10 @@ Local-first webapp for real-time JD → keyword-aligned LaTeX resume, aimed at A
 
 ## Phases
 
-- **Phase 0–1 (this scaffold):** App shell, JD parse → prefilled controls, cascade stubs, env/git, latex/pdf stubs.
+- **Phase 0–1 (this scaffold):** App shell, JD paste **or** URL fetch → prefilled controls, cascade stubs, env/git, latex/pdf stubs.
 - **Phase 1b:** Real prompts, master resume JSON fill, LaTeX compile + page-count gate.
 - **Phase 2:** Run history, diffs, regenerate.
-- **Phase 3:** URL ingest, cover letter stub.
+- **Phase 3:** Smarter scrape (board-specific), cover letter stub.
 
 ## Testable now
 
