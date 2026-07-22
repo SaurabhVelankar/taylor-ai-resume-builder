@@ -240,11 +240,35 @@ body {
   background: var(--accent-soft);
 }
 
+.btn-applied {
+  border-radius: 0.55rem;
+  border: 1px solid #15803d;
+  background: #16a34a;
+  color: #ffffff;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(21, 128, 61, 0.25);
+  transition: background 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-applied:hover:not(:disabled) {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.btn-applied.is-saved {
+  background: var(--ok-bg);
+  border-color: var(--ok-fg);
+  color: var(--ok-fg);
+}
+
 .btn-primary:disabled,
 .btn-accent:disabled,
-.btn-ghost:disabled {
+.btn-ghost:disabled,
+.btn-applied:disabled {
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: 0.55;
 }
 
 .section-label {

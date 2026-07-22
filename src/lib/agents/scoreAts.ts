@@ -4,7 +4,11 @@ import { tailoredTextBlob } from "@/lib/resume/master";
 import { filterConcreteStackKeywords } from "@/lib/resume/keywordQuality";
 import { AtsScore, AtsScoreSchema, TailoredResume } from "@/lib/types";
 
-function mockScore(high: string[], tailored: TailoredResume): AtsScore {
+/** Deterministic substring coverage — no AI, no tokens. */
+export function localAtsScore(
+  high: string[],
+  tailored: TailoredResume,
+): AtsScore {
   const concrete = filterConcreteStackKeywords(high);
   const blob = tailoredTextBlob(tailored).toLowerCase();
   const presentHigh = concrete.filter((k) => blob.includes(k.toLowerCase()));
@@ -19,6 +23,10 @@ function mockScore(high: string[], tailored: TailoredResume): AtsScore {
     presentHigh,
     missingHigh,
   });
+}
+
+function mockScore(high: string[], tailored: TailoredResume): AtsScore {
+  return localAtsScore(high, tailored);
 }
 
 export async function scoreAts(args: {

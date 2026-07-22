@@ -43,8 +43,12 @@ yarn-error.log*
 # local TeX toolchain binaries (download per machine)
 /tools/bin/
 
-# auto-backup before Make MetaData overwrites master JSON
+# auto-backup before Make MetaData overwrites master JSON (per archetype)
 /data/master_resume.backup.json
+/data/master_resume_*.backup.json
+
+# local application tracker records (sensitive: per-job fabrication traces)
+/data/applications/
 
 # LaTeX build junk
 *.aux

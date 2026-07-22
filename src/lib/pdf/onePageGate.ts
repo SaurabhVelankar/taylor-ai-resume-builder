@@ -3,6 +3,7 @@ import { compileLatex } from "@/lib/latex/compile";
 import { renderLatex } from "@/lib/latex/render";
 import { getPdfPageCount } from "@/lib/pdf/pageCount";
 import type { HeaderLocationDecision } from "@/lib/resume/headerLocation";
+import { DEFAULT_RESUME_TYPE } from "@/lib/resume/resumeTypes";
 import type { OnePageGate, RoleFamily, TailoredResume } from "@/lib/types";
 
 const MAX_TIER = 6;
@@ -33,6 +34,7 @@ export async function enforceOnePage(
   highKeywords: string[] = [],
   onProgress?: (msg: string) => void | Promise<void>,
   detectedLocation: string = "",
+  resumeType: string = DEFAULT_RESUME_TYPE,
 ): Promise<EnforceOnePageResult> {
   const original = tailored;
   let current = tailored;
@@ -68,6 +70,7 @@ export async function enforceOnePage(
       roleFamily,
       layout,
       detectedLocation,
+      resumeType,
     );
     lastTex = rendered.tex;
     lastHeaderDecision = rendered.headerDecision;

@@ -11,8 +11,8 @@ import {
   type HeaderLocationDecision,
 } from "@/lib/resume/headerLocation";
 import type { RoleFamily, TailoredResume } from "@/lib/types";
+import { DEFAULT_RESUME_TYPE, templatePathFor } from "@/lib/resume/resumeTypes";
 import { readFile } from "fs/promises";
-import path from "path";
 
 function replaceMarkedSection(
   source: string,
@@ -52,7 +52,7 @@ function applyLayoutToTemplate(
   tex: string,
   layout: LayoutCompressOpts,
 ): string {
-  let out = tex;
+  const out = tex;
 
   // Never wipe Academic Research — section stays even on overflow tiers.
   // (dropResearch is reserved/always false)
@@ -144,10 +144,10 @@ export async function renderLatex(
   roleFamily: RoleFamily = "other",
   layout: LayoutCompressOpts = DEFAULT_LAYOUT,
   detectedLocation: string = "",
+  resumeType: string = DEFAULT_RESUME_TYPE,
 ): Promise<{ tex: string; headerDecision: HeaderLocationDecision }> {
-  const templatePath = path.join(process.cwd(), "data", "template.tex");
-  let tex = await readFile(templatePath, "utf8");
-  const master = await loadMasterResume();
+  let tex = await readFile(templatePathFor(resumeType), "utf8");
+  const master = await loadMasterResume(resumeType);
 
   const merged = mergeTailoredResume(master, tailored, roleFamily);
 

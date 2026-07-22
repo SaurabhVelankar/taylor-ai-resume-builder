@@ -35,8 +35,9 @@ async function mockTailor(
   controls: TailorControls,
   keywords: KeywordExtract,
   gap: GapAnalysis,
+  resumeType: string,
 ): Promise<TailoredResume> {
-  const master = await loadMasterResume();
+  const master = await loadMasterResume(resumeType);
   const high = keywords.mustHaveHigh.slice(0, 5);
   const sparse = high.length + keywords.tools.length < 3;
 
@@ -90,10 +91,16 @@ export async function tailorResume(args: {
   keywords: KeywordExtract;
   gap: GapAnalysis;
   masterResumeJson: string;
+  resumeType: string;
 }): Promise<{ data: TailoredResume; usedDemo: boolean }> {
   if (isDemoMode()) {
     return {
-      data: await mockTailor(args.controls, args.keywords, args.gap),
+      data: await mockTailor(
+        args.controls,
+        args.keywords,
+        args.gap,
+        args.resumeType,
+      ),
       usedDemo: true,
     };
   }

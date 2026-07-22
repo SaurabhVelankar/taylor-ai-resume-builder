@@ -76,8 +76,9 @@ export async function hardInjectAggressiveKeywords(args: {
   roleFamily: RoleFamily;
   /** Extra concrete terms to force (e.g. still-missing after a score). */
   forceTerms?: string[];
+  resumeType: string;
 }): Promise<HardInjectResult> {
-  const master = await loadMasterResume();
+  const master = await loadMasterResume(args.resumeType);
   const masterGroups = master.skills.groups.filter(
     (g) => g.id !== "soft_collaboration",
   );

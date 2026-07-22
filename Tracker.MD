@@ -1,10 +1,12 @@
 # Tracker Feature — Gameplan (AI-friendly spec)
 
-> Status: **APPROVED, not yet implemented.** This doc is the source of truth for a
-> future agent instance picking up the "Application Tracker" feature. Read it fully
-> before writing code. When you implement Next.js routes/pages, first consult
-> `node_modules/next/dist/docs/` per `AGENTS.md` — this is a pinned, non-standard
-> Next.js (16.2.10, App Router).
+> Status: **PHASE 1 IMPLEMENTED + ANALYTICS.** Local JSON store + adapter + API
+> routes + "I Applied" button + `/applications` table + pace/analytics strip are
+> live. Phase 2 leftovers (editable status/notes UI, search/filter/sort) and
+> Phase 3 (redis/supabase adapters) remain.
+> When implementing Next.js routes/pages, consult `node_modules/next/dist/docs/` per
+> `AGENTS.md` — pinned, non-standard Next.js (16.2.10, App Router). Note: `params` in
+> route handlers is a **Promise** in this version (`const { id } = await ctx.params`).
 
 ---
 
@@ -98,8 +100,8 @@ export function getStore(): ApplicationStore { /* switch on TRACKER_STORE */ }
   `fs/promises` usage patterns seen in `src/lib/latex/compile.ts`.
 - **IDs:** `crypto.randomUUID()`.
 - **Gitignore:** add `data/applications/` to `.gitignore` (sensitive fabrication data;
-  keep out of git). Note: `data/template.tex` and `data/master_resume.json` ARE
-  committed, so only ignore the new subfolder.
+  keep out of git). Note: `data/template_<type>.tex` and `data/master_resume_<type>.json`
+  ARE committed, so only ignore the new subfolder.
 
 ---
 
@@ -112,7 +114,7 @@ produces (see §5 for exact sources).
 ```ts
 ApplicationRecord = {
   id: string;
-  schemaVersion: 1;
+  schemaVersion: 1 | 2;        // v2 adds resumeType/resumeTypeLabel (multi-master)
   appliedAt: string;           // ISO timestamp
   status: "applied" | "screen" | "interview" | "offer" | "rejected" | "ghosted";
   notes: string;               // free text, user-editable
@@ -121,6 +123,10 @@ ApplicationRecord = {
   company: string;
   roleTitle: string;           // suggestions.title
   jdUrl: string;               // may be ""
+
+  // Multi-master (v2)
+  resumeType: string;          // archetype slug used (ml/ds/swe/…)
+  resumeTypeLabel: string;     // human label ("Machine Learning")
 
   // Targeting
   roleFamily: RoleFamily;
@@ -276,15 +282,41 @@ older Next.)
 
 ---
 
-## 10. File checklist (Phase 1)
-- [ ] `src/lib/tracker/types.ts` — zod schema + types
-- [ ] `src/lib/tracker/store.ts` — `ApplicationStore` interface + `getStore()`
-- [ ] `src/lib/tracker/localStore.ts` — local JSON impl
-- [ ] `src/lib/tracker/redisStore.ts` — stub (throws "not configured")
-- [ ] `src/lib/tracker/supabaseStore.ts` — stub (throws "not configured")
-- [ ] `src/app/api/applications/route.ts` — POST + GET
-- [ ] `src/app/api/applications/[id]/route.ts` — PATCH + DELETE (can defer to Phase 2)
-- [ ] `src/components/Workbench.tsx` — "I Applied" button + header "My Applications" link
-- [ ] `src/app/applications/page.tsx` — tracker table
-- [ ] `.gitignore` — add `data/applications/`
-- [ ] `.env.example` — commented `TRACKER_STORE` + redis/supabase placeholders
+## 10. File checklist (Phase 1) — DONE
+- [x] `src/lib/tracker/types.ts` — zod schema + types
+- [x] `src/lib/tracker/store.ts` — `ApplicationStore` interface + `getStore()`
+- [x] `src/lib/tracker/localStore.ts` — local JSON impl (atomic writes, newest-first)
+- [x] `src/lib/tracker/redisStore.ts` — stub (throws "not implemented")
+- [x] `src/lib/tracker/supabaseStore.ts` — stub (throws "not implemented")
+- [x] `src/app/api/applications/route.ts` — POST + GET
+- [x] `src/app/api/applications/[id]/route.ts` — PATCH + DELETE (routes exist; UI wiring is Phase 2)
+- [x] `src/components/Workbench.tsx` — green "I Applied ✓" button + header "My Applications" link
+- [x] `src/app/applications/page.tsx` — tracker table (expandable what-changed + Copy/Download TeX)
+- [x] `.gitignore` — added `data/applications/`
+- [x] `.env.example` — `TRACKER_STORE` + redis/supabase placeholders
+- [x] `src/app/globals.css` — `.btn-applied` green button style
+
+---
+
+## 11. Analytics panel (implemented)
+
+Same page (`/applications`), strip **above** the table. Pure TypeScript aggregation
+over the already-loaded `ApplicationRecord[]` — **no CSV, no Pandas**.
+
+### Files
+- `src/lib/tracker/stats.ts` — `computeTrackerStats(records, opts)`, `goalsFromEnv()`
+- `src/components/TrackerAnalytics.tsx` — UI strip
+- Goals via `NEXT_PUBLIC_TRACKER_{DAILY,WEEKLY,MONTHLY,LIFETIME}_GOAL` (defaults 5 / 25 / 100 / 0)
+
+### Rules
+- **Local calendar** day buckets (browser TZ).
+- **Weeks = Monday–Sunday** (`startOfWeekMonday`).
+- Goal `0` = hide meter ("No goal set").
+- Streak: consecutive days with ≥1 app; if today is 0, streak may still count from yesterday.
+
+### Panel contents
+1. Pace: Today / This week (Mo–Su) / This month / Lifetime (+ progress bars)
+2. Status funnel (Lifetime | This month toggle)
+3. Last-14-days sparkline (SVG bars)
+4. Breakdown chips: resume type · role family · mode
+5. This-week Mon→Sun day strip + streak / best day / avg ATS in the header line

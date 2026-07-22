@@ -165,6 +165,11 @@ export const TailorControlsSchema = z.object({
   pinnedKeywords: z.array(z.string()).optional().default([]),
   /** Aggressive: force into skills on next cascade (UI chip action). */
   forceInjectKeywords: z.array(z.string()).optional().default([]),
+  /**
+   * Which master archetype to tailor (template_{type}.tex + master_resume_{type}.json).
+   * Server re-validates against files on disk; falls back to "ml" when missing.
+   */
+  resumeType: z.string().optional().default("ml"),
 });
 export type TailorControls = z.infer<typeof TailorControlsSchema>;
 

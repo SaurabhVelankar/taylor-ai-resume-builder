@@ -5,25 +5,47 @@ import {
   coverageConcrete,
   hardInjectAggressiveKeywords,
 } from "@/lib/agents/hardInject";
-import { scoreAts } from "@/lib/agents/scoreAts";
+import { localAtsScore, scoreAts } from "@/lib/agents/scoreAts";
 import { tailorResume } from "@/lib/agents/tailor";
 import { resumePdfBasename } from "@/lib/latex/filenames";
 import { enforceOnePage } from "@/lib/pdf/onePageGate";
-import type {
-  CascadeStepId,
-  CascadeStepResult,
-  ChangeSummary,
-  KeywordExtract,
-  TailorControls,
-  TailoredResume,
+import { loadMasterResume, originalTailoredResume } from "@/lib/resume/master";
+import {
+  ChangeSummarySchema,
+  type CascadeStepId,
+  type CascadeStepResult,
+  type ChangeSummary,
+  type KeywordExtract,
+  type TailorControls,
+  type TailoredResume,
 } from "@/lib/types";
 import { isSparseKeywordJd, stackKeywordsForAts } from "@/lib/types";
-import { readFile } from "fs/promises";
-import path from "path";
+import {
+  masterPathFor,
+  resolveResumeType,
+  templatePathFor,
+} from "@/lib/resume/resumeTypes";
+import { access, readFile } from "fs/promises";
 
-async function loadMasterResumeJson(): Promise<string> {
-  const filePath = path.join(process.cwd(), "data", "master_resume.json");
-  return readFile(filePath, "utf8");
+async function fileExists(p: string): Promise<boolean> {
+  try {
+    await access(p);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function loadMasterResumeJson(resumeType: string): Promise<string> {
+  try {
+    return await readFile(masterPathFor(resumeType), "utf8");
+  } catch {
+    throw new Error(
+      `No master_resume_${resumeType}.json found for archetype "${resumeType}". ` +
+        `Run Make MetaData first (it builds one JSON per template_*.tex), ` +
+        `or pick a Resume type that already has metadata.`,
+    );
+  }
 }
 
 const LABELS: Record<CascadeStepId, string> = {
@@ -81,7 +103,13 @@ export async function runTailorCascade(args: {
   let texSource: string | null = null;
   let changeSummary: ChangeSummary | null = null;
   const companyName = args.companyName?.trim() || "Company";
-  const masterResumeJson = await loadMasterResumeJson();
+  const resumeType = await resolveResumeType(args.controls.resumeType);
+  if (!(await fileExists(templatePathFor(resumeType)))) {
+    throw new Error(
+      `No template_${resumeType}.tex found in data/. Add that archetype template, or pick another Resume type.`,
+    );
+  }
+  const masterResumeJson = await loadMasterResumeJson(resumeType);
 
   const start = async (id: CascadeStepId, summary: string) => {
     await emit({
@@ -96,6 +124,38 @@ export async function runTailorCascade(args: {
   };
 
   try {
+    // "Use Original" = zero AI. Compile the master resume as-is through the
+    // deterministic pipeline (render → Tectonic → one-page gate → local ATS).
+    if (args.controls.mode === "use_original") {
+      const result = await runUseOriginal({
+        controls: args.controls,
+        companyName,
+        keywords: args.keywords,
+        resumeType,
+        start,
+        finish,
+        emit,
+      });
+      await emit({
+        type: "done",
+        usedDemo: false,
+        pdfUrl: result.pdfUrl,
+        pdfFilename: result.pdfFilename,
+        texFilename: result.texFilename,
+        texSource: result.texSource,
+        changeSummary: result.changeSummary,
+      });
+      return {
+        steps,
+        usedDemo: false,
+        pdfUrl: result.pdfUrl,
+        pdfFilename: result.pdfFilename,
+        texFilename: result.texFilename,
+        texSource: result.texSource,
+        changeSummary: result.changeSummary,
+      };
+    }
+
     let keywords = args.keywords;
     await start(
       "extract_keywords",
@@ -153,6 +213,7 @@ export async function runTailorCascade(args: {
       keywords,
       gap: gap.data,
       masterResumeJson,
+      resumeType,
     });
     usedDemo = usedDemo || tailored.usedDemo;
 
@@ -170,6 +231,7 @@ export async function runTailorCascade(args: {
         keywords,
         roleFamily: args.controls.roleFamily,
         forceTerms: args.controls.forceInjectKeywords ?? [],
+        resumeType,
       });
       working = injected.tailored;
       injectNote = injected.injected.length
@@ -206,6 +268,7 @@ export async function runTailorCascade(args: {
         });
       },
       args.controls.location,
+      resumeType,
     );
     // Prefer final compressed content for downstream ATS / summary
     let finalTailored = onePage.tailored;
@@ -280,6 +343,7 @@ export async function runTailorCascade(args: {
           ...(args.controls.forceInjectKeywords ?? []),
           ...missing,
         ],
+        resumeType,
       });
       finalTailored = reinjected.tailored;
 
@@ -299,6 +363,7 @@ export async function runTailorCascade(args: {
           });
         },
         args.controls.location,
+        resumeType,
       );
       finalTailored = onePage.tailored;
       pdfUrl = onePage.pdfUrl;
@@ -365,4 +430,163 @@ export async function runTailorCascade(args: {
     await emit({ type: "error", error: message });
     throw error;
   }
+}
+
+/**
+ * "Use Original" mode — no AI, no tokens. Emits the same step trace as the full
+ * cascade (so the UI is consistent) but only runs deterministic work: identity
+ * render of the master resume → Tectonic compile → one-page gate → local ATS
+ * substring coverage → a fixed "no changes" summary.
+ */
+async function runUseOriginal(args: {
+  controls: TailorControls;
+  companyName: string;
+  keywords?: KeywordExtract;
+  resumeType: string;
+  start: (id: CascadeStepId, summary: string) => Promise<void>;
+  finish: (step: CascadeStepResult) => Promise<void>;
+  emit: (event: CascadeProgressEvent) => Promise<void>;
+}): Promise<{
+  pdfUrl: string | null;
+  pdfFilename: string | null;
+  texFilename: string | null;
+  texSource: string | null;
+  changeSummary: ChangeSummary | null;
+}> {
+  const { controls, companyName, resumeType, start, finish, emit } = args;
+  const master = await loadMasterResume(resumeType);
+  const working = originalTailoredResume(master);
+  const keywords = args.keywords ? filterExtract(args.keywords) : null;
+
+  await start("extract_keywords", "Use Original — skipping AI keyword extract…");
+  await finish({
+    id: "extract_keywords",
+    label: LABELS.extract_keywords,
+    status: "ok",
+    summary: keywords
+      ? `Reused ${keywords.mustHaveHigh.length} parsed stack terms — no new AI call.`
+      : "Skipped — Use Original uses no AI.",
+    data: keywords,
+  });
+
+  await start("gap_analysis", "Use Original — skipping AI gap analysis…");
+  await finish({
+    id: "gap_analysis",
+    label: LABELS.gap_analysis,
+    status: "ok",
+    summary: "Skipped — Use Original uses no AI.",
+    data: null,
+  });
+
+  const bulletCount = working.experience.reduce(
+    (n, e) => n + e.bullets.length,
+    0,
+  );
+  await start(
+    "tailor",
+    "Use Original — compiling your master resume as-is (no AI)…",
+  );
+  await finish({
+    id: "tailor",
+    label: LABELS.tailor,
+    status: "ok",
+    summary: `${bulletCount} bullets · original master, no AI edits`,
+    data: working,
+  });
+
+  const atsStack = [
+    ...new Set([
+      ...(keywords ? stackKeywordsForAts(keywords) : []),
+      ...(controls.pinnedKeywords ?? []),
+    ]),
+  ];
+
+  await start(
+    "latex_compile",
+    `Rendering + Tectonic → ${resumePdfBasename(companyName)}…`,
+  );
+  const onePage = await enforceOnePage(
+    working,
+    companyName,
+    controls.roleFamily,
+    atsStack,
+    async (msg) => {
+      await emit({
+        type: "step_start",
+        step: {
+          id: "latex_compile",
+          label: LABELS.latex_compile,
+          summary: msg,
+        },
+      });
+    },
+    controls.location,
+    resumeType,
+  );
+  await finish({
+    id: "latex_compile",
+    label: LABELS.latex_compile,
+    status: onePage.pdfPath ? "ok" : "error",
+    summary: onePage.compileMessage,
+    data: {
+      texPreview: onePage.texSource.slice(0, 500),
+      pdfUrl: onePage.pdfUrl,
+      pdfFilename: onePage.pdfFilename,
+      texFilename: onePage.texFilename,
+      headerDecision: onePage.headerDecision,
+      attempts: onePage.attempts,
+    },
+  });
+
+  await start("one_page_gate", "Final page-count check…");
+  await finish({
+    id: "one_page_gate",
+    label: LABELS.one_page_gate,
+    status: onePage.gate.accepted ? "ok" : "error",
+    summary: onePage.gate.message,
+    data: { ...onePage.gate, attempts: onePage.attempts },
+  });
+
+  await start(
+    "ats_score",
+    atsStack.length ? "Local stack coverage (no AI)…" : "No stack keywords…",
+  );
+  const scored = localAtsScore(atsStack, onePage.tailored);
+  await finish({
+    id: "ats_score",
+    label: LABELS.ats_score,
+    status: "ok",
+    summary: atsStack.length
+      ? `${Math.round(scored.coverageHigh * 100)}% concrete stack coverage (original, no injection)`
+      : "No concrete stack keywords to score",
+    data: scored,
+  });
+
+  const headerLoc = onePage.headerDecision?.headerLocation;
+  await start("change_summary", "Recording original (no changes)…");
+  const changeSummary = ChangeSummarySchema.parse({
+    headline: "Used your original resume — no AI tailoring.",
+    bullets: [
+      "Compiled your master resume as-is; no bullets rewritten and no keywords injected.",
+      ...(headerLoc ? [`Header location: ${headerLoc}.`] : []),
+      "Zero AI calls / tokens used for this run.",
+    ],
+    keywordsAdded: [],
+    sectionsTouched: [],
+  });
+  await finish({
+    id: "change_summary",
+    label: LABELS.change_summary,
+    status: "ok",
+    summary: changeSummary.headline,
+    data: changeSummary,
+  });
+
+  return {
+    pdfUrl: onePage.pdfUrl,
+    pdfFilename: onePage.pdfFilename,
+    texFilename: onePage.texFilename,
+    texSource: onePage.texSource,
+    changeSummary,
+  };
 }

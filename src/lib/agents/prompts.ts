@@ -204,27 +204,41 @@ Current content:
 
   makeMetadata: {
     id: "make_metadata",
-    system: `Rebuild master_resume.json from resume LaTeX. JSON only — full object, not a diff.
+    system: `Rebuild the master resume JSON from resume LaTeX. Output JSON only — one full object, not a diff.
 
 Preserve exact wording from LaTeX (bullets, titles, dates, skills). Do not invent jobs/degrees/metrics.
 
-Required top-level keys (keep/extend existing shape):
-basics, summary, objective, skills.groups[], education[], experience[], projects[], research[],
-publications[], affiliations[], certifications[], awards[], coursework_highlights[],
-sectionOrder, roleFamilyPresets, meta.
+CRITICAL — use these EXACT field names (this internal schema, NOT JSON-Resume). The renderer
+reads experience[] and skills.groups[] verbatim; wrong field names WILL break compilation:
 
-skills.groups items:
-{id, label, items[], roleRelevance[], altLabels?, includeByDefault?, notes?}
-Include groups useful for ml / data_science / swe / data_engineering (altLabels for label swaps).
+experience[] item (NOT company/position/highlights):
+{
+  "id": "unique-kebab-id",
+  "title": "job title",            // NOT "position"
+  "organization": "employer",      // NOT "company"
+  "location": "City, ST",
+  "start": "Mon YYYY",             // NOT "startDate"
+  "end": "Mon YYYY" | "Present",   // NOT "endDate"
+  "link": "https://…" | null,      // NOT "url"
+  "bullets": [                     // NOT "highlights"
+    { "id": "…", "text": "…", "priority": "high"|"med"|"low", "keywords": ["…"] }
+  ]
+}
 
-Experience/projects/research bullets:
-{id, text, priority: "high"|"med"|"low", keywords: string[]}
+skills.groups[] item:
+{ "id": "snake_id", "label": "Group Label", "items": ["…"], "roleRelevance": ["ml","data_science","swe","data_engineering","other"], "altLabels"?: { "data_science": "…" }, "includeByDefault"?: true }
 
-Use existing JSON as schema guide; refresh content from LaTeX; keep useful empty optional sections.
-meta.sourceTemplate = "data/template.tex"; set meta.lastMakeMetadata timestamp note.`,
-    userTemplate: `Fill/replace master resume JSON from LaTeX. Prefer this schema/shape:
+roleFamilyPresets: map EACH of ml/data_science/swe/data_engineering/other to
+{ "skillsGroupIds": ["<existing skills.groups id>", …], "notes"?: "…" }   // flat skillsGroupIds, NOT sections.skills.groups
 
---- EXISTING master_resume.json ---
+Also include (may be empty): basics, summary, objective, education[], projects[] (bullets same shape),
+research[], publications[], affiliations[], certifications[], awards[], coursework_highlights[],
+sectionOrder, meta. Projects/education live in the LaTeX template statically, but keep them in JSON too.
+
+If an EXISTING master JSON is provided, mirror its exact shape/ids. Set meta.lastMakeMetadata note.`,
+    userTemplate: `Fill/replace the master resume JSON from LaTeX. Match the internal schema in the system prompt EXACTLY (experience uses title/organization/start/end/bullets; roleFamilyPresets uses skillsGroupIds). If EXISTING is non-empty, mirror its shape and ids.
+
+--- EXISTING master JSON (may be {} for a new archetype) ---
 {{existingMasterJson}}
 --- END EXISTING ---
 

@@ -5,6 +5,7 @@ import { LatexEditorPanel } from "@/components/LatexEditorPanel";
 import { PdfReadyToast } from "@/components/PdfReadyToast";
 import { stripResumePrefix } from "@/lib/latex/filenames";
 import { guessHighlightTerm } from "@/lib/workbench/changeHighlight";
+import Link from "next/link";
 import { downloadExportPack } from "@/lib/workbench/exportPack";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import type {
@@ -26,6 +27,13 @@ import {
   ROLE_LABELS,
   isSparseKeywordJd,
 } from "@/lib/types";
+import {
+  DEFAULT_RESUME_TYPE,
+  resumeTypeFromRoleFamily,
+  resumeTypeLabel,
+} from "@/lib/resume/resumeTypeShared";
+
+type ResumeTypeInfo = { type: string; label: string; hasMaster: boolean };
 
 const DEFAULT_CONTROLS = {
   mode: "middle_ground" as TailorMode,
@@ -36,6 +44,7 @@ const DEFAULT_CONTROLS = {
   aggressiveCoverageTarget: 0.8 as AggressiveCoverageTarget,
   pinnedKeywords: [] as string[],
   forceInjectKeywords: [] as string[],
+  resumeType: DEFAULT_RESUME_TYPE,
 };
 
 type ParseResponse = {
@@ -49,13 +58,22 @@ type ParseResponse = {
   error?: string;
 };
 
+type MetadataResultRow = {
+  type: string;
+  ok: boolean;
+  usedDemo?: boolean;
+  wrote?: boolean;
+  summary?: string;
+  master?: unknown;
+  masterPath?: string | null;
+  error?: string;
+};
+
 type MetadataResponse = {
   ok: boolean;
   summary?: string;
-  wrote?: boolean;
-  usedDemo?: boolean;
-  promptId?: string;
-  master?: unknown;
+  demoMode?: boolean;
+  results?: MetadataResultRow[];
   error?: string;
 };
 
@@ -109,12 +127,16 @@ export function Workbench() {
     null,
   );
   const [metadataPreview, setMetadataPreview] = useState<unknown | null>(null);
+  const [metadataResults, setMetadataResults] = useState<MetadataResultRow[]>(
+    [],
+  );
   const [error, setError] = useState<string | null>(null);
   const [statusNote, setStatusNote] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [busy, setBusy] = useState<
-    "parse" | "tailor" | "metadata" | "revert" | null
+    "parse" | "tailor" | "metadata" | "revert" | "applying" | null
   >(null);
+  const [applied, setApplied] = useState(false);
   const [cascadeOpen, setCascadeOpen] = useState(false);
   const [pendingSuggestions, setPendingSuggestions] =
     useState<JdSuggestions | null>(null);
@@ -125,16 +147,40 @@ export function Workbench() {
   const [pdfToastOpen, setPdfToastOpen] = useState(false);
   const [pdfToastMessage, setPdfToastMessage] = useState("");
   const [exportBusy, setExportBusy] = useState(false);
+  const [availableTypes, setAvailableTypes] = useState<ResumeTypeInfo[]>([]);
+
+  const refreshResumeTypes = useCallback(async () => {
+    try {
+      const res = await fetch("/api/resume-types");
+      const data = (await res.json()) as {
+        ok?: boolean;
+        types?: ResumeTypeInfo[];
+      };
+      if (data.ok && Array.isArray(data.types)) {
+        setAvailableTypes(data.types);
+      }
+    } catch {
+      // Non-fatal: dropdown falls back to the default type.
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshResumeTypes();
+  }, [refreshResumeTypes]);
 
   function applyControlsFromSuggestions(s: JdSuggestions) {
     setSuggestions(s);
     setCompanyName(s.company ?? "");
+    // Deterministic roleFamily → resumeType, but only if that archetype exists.
+    const detectedType = resumeTypeFromRoleFamily(s.roleFamily);
+    const typeExists = availableTypes.some((t) => t.type === detectedType);
     setControls((prev) => ({
       ...prev,
       roleFamily: s.roleFamily,
       location: s.location || prev.location,
       seniority: s.seniority,
       workArrangement: s.workArrangement,
+      resumeType: typeExists ? detectedType : prev.resumeType,
     }));
     setPendingSuggestions(null);
     setParseBannerDismissed(true);
@@ -185,6 +231,7 @@ export function Workbench() {
     setPendingSuggestions(null);
     setParseBannerDismissed(false);
     setPdfToastOpen(false);
+    setApplied(false);
     setBusy("parse");
     try {
       const res = await fetch("/api/parse", {
@@ -277,6 +324,66 @@ export function Workbench() {
     }
   }
 
+  async function onIApplied() {
+    setError(null);
+    setBusy("applying");
+    try {
+      const ats = steps?.find((s) => s.id === "ats_score")?.data as
+        | AtsScore
+        | undefined;
+      const compileData = steps?.find((s) => s.id === "latex_compile")?.data as
+        | { headerDecision?: { headerLocation?: string } }
+        | undefined;
+
+      const payload = {
+        company: companyName.trim() || "Company",
+        roleTitle: suggestions?.title ?? "",
+        jdUrl: jdUrl.trim(),
+        roleFamily: controls.roleFamily,
+        seniority: controls.seniority,
+        workArrangement: controls.workArrangement,
+        mode: controls.mode,
+        aggressiveTarget:
+          controls.mode === "aggressive_fabrication"
+            ? controls.aggressiveCoverageTarget
+            : null,
+        resumeType: controls.resumeType,
+        resumeTypeLabel: resumeTypeLabel(controls.resumeType),
+        detectedLocation: suggestions?.location ?? "",
+        overrideLocation: controls.location,
+        headerLocation: compileData?.headerDecision?.headerLocation ?? "",
+        mustHaveHigh: keywords?.mustHaveHigh ?? [],
+        niceToHaveLow: keywords?.niceToHaveLow ?? [],
+        tools: keywords?.tools ?? [],
+        themes: keywords?.themes ?? [],
+        pinnedKeywords: controls.pinnedKeywords,
+        forceInjectKeywords: controls.forceInjectKeywords,
+        coverageHigh: ats?.coverageHigh ?? null,
+        presentHigh: ats?.presentHigh ?? [],
+        missingHigh: ats?.missingHigh ?? [],
+        changeSummary: changeSummary,
+        texSource,
+        texFilename,
+      };
+
+      const res = await fetch("/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = (await res.json()) as { ok?: boolean; error?: string };
+      if (!data.ok) {
+        throw new Error(data.error || "Could not save application");
+      }
+      setApplied(true);
+      setStatusNote(`Saved to tracker · ${payload.company}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not save application");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function onHighlightChange(bullet: string) {
     const term = guessHighlightTerm(
       bullet,
@@ -310,6 +417,14 @@ export function Workbench() {
 
   async function onTailor() {
     setError(null);
+    const selected = availableTypes.find((t) => t.type === controls.resumeType);
+    if (selected && !selected.hasMaster) {
+      setError(
+        `Resume type "${selected.label}" (${selected.type}) has no master_resume_${selected.type}.json yet. Click Make MetaData first (builds metadata for every template_*.tex), then run the cascade.`,
+      );
+      return;
+    }
+
     setPdfUrl(null);
     setPdfFilename(null);
     setTexFilename(null);
@@ -319,6 +434,7 @@ export function Workbench() {
     setManualPageCount(null);
     setLatexStatus(null);
     setChangeSummary(null);
+    setApplied(false);
     setBusy("tailor");
     setCascadeOpen(true);
     setSteps(emptyCascadeSteps());
@@ -500,18 +616,45 @@ export function Workbench() {
         body: JSON.stringify({}),
       });
       const data = (await res.json()) as MetadataResponse;
-      if (!data.ok) {
+      const results = data.results ?? [];
+      if (!data.ok && results.length === 0) {
         throw new Error(data.error || "Make MetaData failed");
       }
+      const okCount = results.filter((r) => r.ok).length;
+      const failCount = results.length - okCount;
+      const shortLine = results.length
+        ? results
+            .map((r) =>
+              r.ok
+                ? `${r.type} ✓${r.wrote ? " wrote" : r.usedDemo ? " demo" : ""}`
+                : `${r.type} ✗`,
+            )
+            .join(" · ")
+        : "no types found";
       startTransition(() => {
-        setMetadataPreview(data.master ?? null);
-        setStatusNote(
-          data.summary ||
-            (data.usedDemo
-              ? "Make MetaData ran in DEMO_MODE (placeholder prompts)."
-              : "Make MetaData finished."),
+        setMetadataResults(results);
+        setMetadataPreview(
+          results.length
+            ? Object.fromEntries(
+                results.map((r) => [r.type, r.ok ? r.master : { error: r.error }]),
+              )
+            : null,
         );
+        setStatusNote(
+          `Make MetaData: ${okCount} ok${failCount ? `, ${failCount} failed` : ""} — ${shortLine}`,
+        );
+        if (!data.ok || failCount > 0) {
+          setError(
+            data.error ||
+              results
+                .filter((r) => !r.ok)
+                .map((r) => `[${r.type}] ${r.error || "failed"}`)
+                .join(" · ") ||
+              "Make MetaData failed",
+          );
+        }
       });
+      void refreshResumeTypes();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Make MetaData failed");
     } finally {
@@ -521,14 +664,18 @@ export function Workbench() {
 
   async function onRevertTex() {
     const ok = window.confirm(
-      "Revert the working TeX to the baseline master?\n\nThis rebuilds default MetaData, deletes current Resume_* artifacts, and clears the tailored editor state. data/template.tex is never touched.",
+      "Revert the working TeX to the baseline masters?\n\nThis rebuilds MetaData for ALL resume types, deletes current Resume_* artifacts, and clears the tailored editor state. The editor reloads the selected type's baseline. Your data/template_*.tex files are never touched.",
     );
     if (!ok) return;
 
     setError(null);
     setBusy("revert");
     try {
-      const res = await fetch("/api/resume/revert", { method: "POST" });
+      const res = await fetch("/api/resume/revert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resumeType: controls.resumeType }),
+      });
       const data = (await res.json()) as {
         ok?: boolean;
         error?: string;
@@ -538,6 +685,7 @@ export function Workbench() {
         pdfFilename?: string;
         pdfUrl?: string;
         pageCount?: number | null;
+        resumeType?: string;
         metadataSummary?: string;
       };
       if (!data.ok) {
@@ -553,6 +701,7 @@ export function Workbench() {
       setPendingSuggestions(null);
       setParseBannerDismissed(false);
       setMetadataPreview(null);
+      setMetadataResults([]);
       setCompanyName("");
       setControls((c) => ({
         ...c,
@@ -585,8 +734,11 @@ export function Workbench() {
   const hasPaste = jdText.trim().length >= 40;
   const hasUrl = /^https?:\/\/\S+/i.test(jdUrl.trim());
   const canParse = (hasPaste || hasUrl) && busy === null && !pending;
+  const isUseOriginal = controls.mode === "use_original";
   const canTailor =
-    hasPaste && suggestions !== null && busy === null && !pending;
+    busy === null &&
+    !pending &&
+    (isUseOriginal || (hasPaste && suggestions !== null));
   const canMakeMetadata = busy === null && !pending;
   const canRevert = busy === null && !pending;
 
@@ -606,11 +758,14 @@ export function Workbench() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <Link href="/applications" className="btn-ghost" prefetch={false}>
+            My Applications
+          </Link>
           <button
             type="button"
             onClick={onRevertTex}
             disabled={!canRevert}
-            title="Reset the working TeX to the baseline master, rebuild default MetaData, and clear tailored artifacts. data/template.tex stays untouched."
+            title="Reset the working TeX to the baseline masters, rebuild MetaData for ALL resume types, and clear tailored artifacts. Your data/template_*.tex files stay untouched."
             className="btn-ghost"
           >
             {busy === "revert" ? "Reverting…" : "Revert TeX"}
@@ -619,7 +774,7 @@ export function Workbench() {
             type="button"
             onClick={onMakeMetadata}
             disabled={!canMakeMetadata}
-            title="Rebuild data/master_resume.json from data/template.tex"
+            title="Rebuild master_resume_{type}.json from every data/template_{type}.tex (runs per type)"
             className="btn-ghost"
           >
             {busy === "metadata" ? "Making MetaData…" : "Make MetaData"}
@@ -834,6 +989,39 @@ export function Workbench() {
               </select>
             </Field>
 
+            <Field label="Resume type">
+              <select
+                value={controls.resumeType}
+                onChange={(e) =>
+                  setControls((c) => ({
+                    ...c,
+                    resumeType: e.target.value,
+                  }))
+                }
+                className="field"
+              >
+                {(availableTypes.length
+                  ? availableTypes
+                  : [
+                      {
+                        type: DEFAULT_RESUME_TYPE,
+                        label: resumeTypeLabel(DEFAULT_RESUME_TYPE),
+                        hasMaster: true,
+                      },
+                    ]
+                ).map((t) => (
+                  <option key={t.type} value={t.type}>
+                    {t.label} ({t.type})
+                    {t.hasMaster ? "" : " · no metadata yet"}
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] leading-snug text-[var(--faint)]">
+                Which master archetype the cascade tailors (template_{"{type}"}
+                .tex). Auto-set from role family after Parse; fallback ml.
+              </p>
+            </Field>
+
             <Field label="Location">
               <input
                 value={controls.location}
@@ -983,8 +1171,16 @@ export function Workbench() {
               ? activeStepId
                 ? `Running: ${CASCADE_STEP_ORDER.find((s) => s.id === activeStepId)?.label ?? "…"}`
                 : "Running cascade…"
-              : "Run tailor cascade"}
+              : isUseOriginal
+                ? "Compile original (no AI)"
+                : "Run tailor cascade"}
           </button>
+          {isUseOriginal ? (
+            <p className="text-[11px] leading-snug text-[var(--faint)]">
+              Use Original makes no AI calls — it compiles your master resume
+              as-is (no JD parse needed, zero tokens).
+            </p>
+          ) : null}
         </section>
       </div>
 
@@ -1037,6 +1233,19 @@ export function Workbench() {
                   {exportBusy ? "Downloading…" : "Download PDF + TeX"}
                 </button>
               ) : null}
+              <button
+                type="button"
+                onClick={onIApplied}
+                disabled={busy !== null || applied}
+                title="Save this application (metadata + what-changed + TeX) to your tracker"
+                className={`btn-applied${applied ? " is-saved" : ""}`}
+              >
+                {applied
+                  ? "Applied ✓ (saved)"
+                  : busy === "applying"
+                    ? "Saving…"
+                    : "I Applied ✓"}
+              </button>
             </div>
           ) : null}
         </div>
@@ -1076,19 +1285,70 @@ export function Workbench() {
         </section>
       ) : null}
 
-      {metadataPreview ? (
-        <section className="panel mt-5 space-y-2 p-5">
-          <h2 className="font-display text-lg text-[var(--ink)]">
-            MetaData preview
-          </h2>
-          <details>
-            <summary className="cursor-pointer text-xs text-[var(--faint)]">
-              View JSON
-            </summary>
-            <pre className="mt-2 max-h-64 overflow-auto rounded-lg bg-[var(--code-bg)] p-3 text-[11px] leading-relaxed text-[var(--code-fg)]">
-              {JSON.stringify(metadataPreview, null, 2)}
-            </pre>
-          </details>
+      {metadataResults.length > 0 || metadataPreview ? (
+        <section className="panel mt-5 space-y-3 p-5">
+          <div>
+            <h2 className="font-display text-lg text-[var(--ink)]">
+              Make MetaData results
+            </h2>
+            <p className="text-xs text-[var(--faint)]">
+              One pass per <code className="text-[var(--muted)]">template_*.tex</code>{" "}
+              archetype. Failures for one type do not block the others.
+            </p>
+          </div>
+          {metadataResults.length > 0 ? (
+            <ul className="space-y-2">
+              {metadataResults.map((r) => (
+                <li
+                  key={r.type}
+                  className="rounded-lg border px-3 py-2 text-sm"
+                  style={
+                    r.ok
+                      ? {
+                          borderColor: "var(--line)",
+                          background: "var(--surface-solid)",
+                        }
+                      : {
+                          borderColor: "var(--danger-bd)",
+                          background: "var(--danger-bg)",
+                          color: "var(--danger-fg)",
+                        }
+                  }
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <span className="font-semibold text-[var(--ink)]">
+                      {r.ok ? "✓" : "✗"} {r.type}
+                    </span>
+                    <span className="text-xs text-[var(--faint)]">
+                      {r.ok
+                        ? r.wrote
+                          ? "wrote master JSON"
+                          : r.usedDemo
+                            ? "demo stub (not written)"
+                            : "ok"
+                        : "failed"}
+                    </span>
+                  </div>
+                  <p
+                    className={`mt-0.5 text-xs ${r.ok ? "text-[var(--muted)]" : ""}`}
+                  >
+                    {r.ok ? r.summary : r.error}
+                    {r.ok && r.masterPath ? ` · ${r.masterPath}` : ""}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {metadataPreview ? (
+            <details>
+              <summary className="cursor-pointer text-xs text-[var(--faint)]">
+                View JSON preview
+              </summary>
+              <pre className="mt-2 max-h-64 overflow-auto rounded-lg bg-[var(--code-bg)] p-3 text-[11px] leading-relaxed text-[var(--code-fg)]">
+                {JSON.stringify(metadataPreview, null, 2)}
+              </pre>
+            </details>
+          ) : null}
         </section>
       ) : null}
 
